@@ -7,16 +7,21 @@ function toggleMenu() {
   const config = window.SITE_CONFIG || {};
   const versionNodes = ['latestVersion', 'downloadVersion'];
   const dateNodes = ['latestDate', 'downloadDate'];
+
   versionNodes.forEach((id) => {
     const el = document.getElementById(id);
     if (el && config.latestVersion) el.textContent = config.latestVersion;
   });
+
   dateNodes.forEach((id) => {
     const el = document.getElementById(id);
     if (el && config.latestDate) el.textContent = config.latestDate;
   });
+
   const latestLink = document.getElementById('latestDownloadLink');
-  if (latestLink && config.latestReleaseUrl) latestLink.href = config.latestReleaseUrl;
+  if (latestLink) {
+    latestLink.href = config.directDownloadUrl || config.latestReleaseUrl || '#download';
+  }
 })();
 
 // 카카오맵 실제 연결 예시

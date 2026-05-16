@@ -3,27 +3,28 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="방문관리 업무자동화 지원 시스템 - 고객 주소 기반 지도 확인과 업무자동화 프로그램 다운로드 및 업데이트 안내" />
-  <title>방문관리 업무자동화 지원 시스템</title>
+  <meta name="description" content="쿠쿠 업무 자동화 지원 시스템 - 고객 방문, 카카오맵 지도 제공, 업무 자동화 프로그램 다운로드 및 업데이트 안내" />
+  <title>쿠쿠 업무 자동화 지원 시스템</title>
   <link rel="stylesheet" href="assets/styles.css" />
 </head>
 <body>
   <header class="site-header">
     <nav class="nav-wrap">
       <a class="brand" href="#home" aria-label="홈으로 이동">
-        <span class="brand-mark">VG</span>
+        <span class="brand-mark">CK</span>
         <span>
-          <strong>방문관리 업무자동화 지원 시스템</strong>
-          <small>Visit Management Automation</small>
+          <strong>쿠쿠 업무 자동화 지원 시스템</strong>
+          <small>CUCKOO Work Automation Support</small>
         </span>
       </a>
       <button class="nav-toggle" aria-label="메뉴 열기" onclick="toggleMenu()">☰</button>
       <div class="nav-menu" id="navMenu">
-        <a href="#about">소개</a>
-        <a href="#map">카카오맵</a>
+        <a href="#about">시스템 소개</a>
+        <a href="#workflow">업무 자동화</a>
+        <a href="#map">고객 방문지도</a>
         <a href="#download">다운로드</a>
         <a href="#updates">업데이트</a>
-        <a href="#guide">사용방법</a>
+        <a href="#guide">사용 방법</a>
         <a href="#privacy">개인정보</a>
         <a href="#contact">문의</a>
       </div>
@@ -33,19 +34,19 @@
   <main id="home">
     <section class="hero section">
       <div class="hero-content">
-        <p class="eyebrow">고객 방문 · 지도 확인 · 프로그램 업데이트</p>
-        <h1>고객 주소 기반 방문관리 업무를 더 빠르고 정확하게</h1>
+        <p class="eyebrow">업무 자동화 · 고객 방문 · 지도 제공 · 프로그램 업데이트</p>
+        <h1>쿠쿠 현장 업무를 더 빠르고 정확하게 지원하는 자동화 시스템</h1>
         <p class="hero-desc">
-          본 사이트는 고객 방문 관리 업무의 효율화를 위해 제작된 업무지원 페이지입니다.
-          카카오맵 API를 활용한 고객 위치 확인, 업무자동화 프로그램 다운로드, 최신 업데이트 안내를 제공합니다.
+          본 사이트는 쿠쿠 업무 자동화 지원 시스템의 안내와 배포를 위한 공식 업무지원 페이지입니다.
+          고객 방문 업무, 주소 기반 지도 제공, 프로그램 다운로드, 최신 업데이트 안내를 한 곳에서 제공합니다.
         </p>
         <div class="hero-actions">
           <a class="btn primary" href="#download">최신 버전 다운로드</a>
-          <a class="btn secondary" href="#map">지도 기능 확인</a>
+          <a class="btn secondary" href="#map">고객 방문지도 보기</a>
         </div>
         <div class="notice-box">
-          <strong>카카오맵 승인용 안내</strong>
-          <span>서비스 목적, 연락처, 개인정보 처리방침을 포함하여 카카오 Developers 심사 및 도메인 등록에 활용할 수 있도록 구성했습니다.</span>
+          <strong>카카오맵 활용 안내</strong>
+          <span>고객 주소를 지도 위에 표시하여 방문 위치 확인, 동선 관리, 현장 업무 준비를 돕기 위한 업무지원 시스템입니다.</span>
         </div>
       </div>
       <div class="hero-card">
@@ -56,71 +57,92 @@
           <small id="latestDate">2026.05.16</small>
         </div>
         <div class="mini-grid">
-          <div><strong>지도</strong><span>고객명 마커</span></div>
-          <div><strong>엑셀</strong><span>주소 데이터</span></div>
+          <div><strong>자동화</strong><span>업무 처리</span></div>
+          <div><strong>고객방문</strong><span>현장 지원</span></div>
+          <div><strong>지도</strong><span>위치 확인</span></div>
           <div><strong>업데이트</strong><span>버전 관리</span></div>
-          <div><strong>다운로드</strong><span>GitHub Releases</span></div>
         </div>
       </div>
     </section>
 
     <section id="about" class="section">
       <div class="section-title">
-        <p class="eyebrow">About</p>
-        <h2>서비스 소개</h2>
+        <p class="eyebrow">System Overview</p>
+        <h2>시스템 소개</h2>
       </div>
       <div class="cards three">
         <article class="card">
-          <h3>방문 업무 효율화</h3>
-          <p>고객 주소를 기준으로 방문 위치를 확인하고, 담당자의 이동 동선과 현장 업무 준비를 돕습니다.</p>
+          <h3>쿠쿠 업무 자동화</h3>
+          <p>반복적인 고객 관리, 계정 정리, 파일 변환, 방문 준비 업무를 더 빠르고 일관성 있게 처리할 수 있도록 지원합니다.</p>
         </article>
         <article class="card">
-          <h3>카카오맵 기반 위치 확인</h3>
-          <p>카카오맵 API를 활용하여 고객 주소를 지도 위에 표시하고, 고객명 기준으로 마커를 확인할 수 있습니다.</p>
+          <h3>고객 방문 업무 지원</h3>
+          <p>고객명, 주소, 담당자 정보를 기준으로 방문 전 확인이 필요한 정보를 정리하고 현장 업무 준비 시간을 줄입니다.</p>
         </article>
         <article class="card">
-          <h3>업데이트 파일 배포</h3>
-          <p>업무자동화 프로그램의 최신 버전, 수정 내역, 설치 파일을 한 곳에서 안내합니다.</p>
+          <h3>다운로드와 업데이트</h3>
+          <p>최신 프로그램 파일과 업데이트 내역을 제공하여 사용자가 항상 최신 버전으로 업무를 진행할 수 있도록 안내합니다.</p>
         </article>
       </div>
     </section>
 
-    <section id="map" class="section alt">
+    <section id="workflow" class="section alt">
+      <div class="section-title">
+        <p class="eyebrow">Automation Scope</p>
+        <h2>업무 자동화 지원 범위</h2>
+      </div>
+      <div class="cards three">
+        <article class="card">
+          <h3>파일 정리</h3>
+          <p>엑셀, PDF 등 업무 파일을 기준에 맞게 정리하고 필요한 항목을 빠르게 확인할 수 있도록 지원합니다.</p>
+        </article>
+        <article class="card">
+          <h3>고객 데이터 확인</h3>
+          <p>고객번호, 고객명, 연락처, 주소, 상품 정보 등 현장에서 필요한 데이터를 보기 쉽게 정리하는 방향으로 확장할 수 있습니다.</p>
+        </article>
+        <article class="card">
+          <h3>업데이트 관리</h3>
+          <p>기능 개선, 오류 수정, 신규 버전 배포 정보를 한 곳에서 확인하고 최신 파일을 다운로드할 수 있도록 구성했습니다.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="map" class="section">
       <div class="split">
         <div>
-          <p class="eyebrow">Kakao Map</p>
-          <h2>카카오맵 고객 방문지도</h2>
+          <p class="eyebrow">Customer Visit Map</p>
+          <h2>고객 방문지도 제공</h2>
           <p>
-            카카오 Developers에서 JavaScript 키를 발급받은 뒤, <code>index.html</code> 파일의
-            <code>KAKAO_JAVASCRIPT_KEY</code> 값을 실제 키로 교체하면 지도 기능을 연결할 수 있습니다.
+            카카오맵 API를 활용하여 고객 주소를 지도 위에 표시하고, 고객명 또는 담당자 기준으로 방문 위치를 확인할 수 있도록 준비된 영역입니다.
+            카카오 Developers에서 JavaScript 키를 발급받은 뒤 <code>index.html</code>의 <code>KAKAO_JAVASCRIPT_KEY</code> 값을 실제 키로 교체하면 지도 기능을 연결할 수 있습니다.
           </p>
           <ul class="check-list">
             <li>고객 주소 기반 위치 확인</li>
             <li>고객명 마커 표시</li>
-            <li>방문 담당자 동선 확인</li>
-            <li>엑셀 업로드 기능 확장 가능</li>
+            <li>방문 담당자별 동선 확인</li>
+            <li>엑셀 업로드 지도 표시 기능 확장 가능</li>
           </ul>
         </div>
         <div class="map-placeholder" id="mapBox">
           <div>
-            <strong>지도 영역</strong>
+            <strong>고객 방문지도 영역</strong>
             <span>카카오 JavaScript 키 등록 후 실제 지도 표시</span>
           </div>
         </div>
       </div>
     </section>
 
-    <section id="download" class="section">
+    <section id="download" class="section alt">
       <div class="section-title">
         <p class="eyebrow">Download</p>
-        <h2>업무자동화 프로그램 다운로드</h2>
+        <h2>프로그램 다운로드</h2>
       </div>
       <div class="download-panel">
         <div>
           <h3>Windows용 최신 버전</h3>
-          <p>프로그램 파일은 GitHub Releases에 업로드하고, 이 페이지에서는 최신 버전 다운로드 버튼을 제공합니다.</p>
+          <p>아래 버튼을 누르면 최신 업무 자동화 프로그램 파일을 다운로드할 수 있습니다. 프로그램 파일은 GitHub Releases에 업로드하여 버전별로 관리합니다.</p>
           <dl class="info-list">
-            <div><dt>프로그램명</dt><dd>방문관리 업무자동화 지원 시스템</dd></div>
+            <div><dt>프로그램명</dt><dd>쿠쿠 업무 자동화 지원 시스템</dd></div>
             <div><dt>최신 버전</dt><dd id="downloadVersion">v1.0.0</dd></div>
             <div><dt>업데이트일</dt><dd id="downloadDate">2026.05.16</dd></div>
             <div><dt>배포 형식</dt><dd>ZIP 또는 EXE</dd></div>
@@ -128,64 +150,70 @@
         </div>
         <div class="download-actions">
           <a class="btn primary large" id="latestDownloadLink" href="https://github.com/kiuja78/cuckoo-work-system/releases/latest" target="_blank" rel="noopener">최신 버전 다운로드</a>
-          <a class="btn secondary" href="https://github.com/kiuja78/cuckoo-work-system/releases" target="_blank" rel="noopener">전체 버전 보기</a>
-          <p class="small-note">※ 저장소 이름을 변경하면 <code>assets/site-config.js</code>의 링크도 함께 수정하세요.</p>
+          <p class="small-note">
+            ※ 버튼을 실제 설치파일로 바로 연결하려면 <code>assets/site-config.js</code>의 <code>directDownloadUrl</code>에 GitHub Releases 파일 주소를 입력하세요.
+          </p>
         </div>
       </div>
     </section>
 
-    <section id="updates" class="section alt">
+    <section id="updates" class="section">
       <div class="section-title">
         <p class="eyebrow">Release Notes</p>
-        <h2>업데이트 내역</h2>
+        <h2>업데이트 안내</h2>
       </div>
       <div class="timeline">
         <article>
           <span>v1.0.0 · 2026.05.16</span>
           <h3>초기 배포</h3>
-          <p>홈페이지, 다운로드 안내, 카카오맵 영역, 개인정보 처리방침, 업데이트 안내 구조를 구성했습니다.</p>
+          <p>쿠쿠 업무 자동화 지원 시스템 홈페이지, 다운로드 안내, 고객 방문지도 영역, 개인정보 안내, 업데이트 구조를 구성했습니다.</p>
         </article>
         <article>
           <span>예정</span>
-          <h3>엑셀 업로드 지도 기능</h3>
-          <p>고객명, 주소, 담당자 정보를 읽어 지도에 마커로 표시하는 기능을 추가할 수 있습니다.</p>
+          <h3>고객 방문지도 기능 확장</h3>
+          <p>엑셀의 고객명, 주소, 담당자 정보를 읽어 카카오맵 위에 고객명 마커로 표시하는 기능을 추가할 수 있습니다.</p>
+        </article>
+        <article>
+          <span>예정</span>
+          <h3>프로그램 자동 업데이트 연동</h3>
+          <p>프로그램 실행 시 최신 버전을 확인하고 다운로드 페이지로 연결하는 방식으로 확장할 수 있습니다.</p>
         </article>
       </div>
     </section>
 
-    <section id="guide" class="section">
+    <section id="guide" class="section alt">
       <div class="section-title">
         <p class="eyebrow">Guide</p>
         <h2>사용 방법</h2>
       </div>
       <div class="steps">
-        <div><strong>1</strong><p>다운로드 버튼을 눌러 최신 프로그램 파일을 내려받습니다.</p></div>
-        <div><strong>2</strong><p>ZIP 파일인 경우 압축을 해제한 뒤 실행 파일을 실행합니다.</p></div>
-        <div><strong>3</strong><p>사내 보안 경고가 뜨면 관리자 또는 담당자에게 파일 출처를 확인합니다.</p></div>
-        <div><strong>4</strong><p>업데이트 공지를 확인하여 최신 버전을 유지합니다.</p></div>
+        <div><strong>1</strong><p>상단 메뉴에서 다운로드를 선택합니다.</p></div>
+        <div><strong>2</strong><p>최신 버전 다운로드 버튼을 눌러 프로그램 파일을 내려받습니다.</p></div>
+        <div><strong>3</strong><p>ZIP 파일인 경우 압축을 해제한 뒤 실행 파일을 실행합니다.</p></div>
+        <div><strong>4</strong><p>업데이트 안내를 확인하여 항상 최신 버전으로 업무를 진행합니다.</p></div>
       </div>
     </section>
 
-    <section id="privacy" class="section alt">
+    <section id="privacy" class="section">
       <div class="section-title">
         <p class="eyebrow">Privacy</p>
-        <h2>개인정보 처리방침</h2>
+        <h2>개인정보 안내</h2>
       </div>
       <div class="policy-box">
-        <h3>개인정보 처리방침</h3>
+        <h3>개인정보 처리 안내</h3>
         <p>본 사이트와 업무지원 프로그램은 고객 방문 관리 및 업무 처리 목적을 위해 필요한 최소한의 정보를 활용합니다.</p>
-        <h4>1. 수집 항목</h4>
+        <h4>1. 활용 항목</h4>
         <p>고객명, 주소, 연락처, 방문 관리 관련 정보</p>
-        <h4>2. 이용 목적</h4>
-        <p>방문 일정 관리, 지도 기반 위치 확인, 고객 응대 및 사후 관리</p>
-        <h4>3. 보관 및 관리</h4>
-        <p>수집된 정보는 업무 목적 범위 내에서만 사용하며, 외부에 무단 제공하지 않습니다.</p>
+        <h4>2. 활용 목적</h4>
+        <p>고객 방문 준비, 지도 기반 위치 확인, 담당자별 업무 확인, 고객 응대 및 사후 관리</p>
+        <h4>3. 관리 기준</h4>
+        <p>관련 정보는 업무 목적 범위 내에서만 사용하며, 외부에 무단 제공하지 않습니다.</p>
         <h4>4. 문의</h4>
-        <p>개인정보 관련 문의는 아래 연락처를 통해 접수할 수 있습니다.</p>
+        <p>개인정보 및 시스템 관련 문의는 아래 연락처를 통해 접수할 수 있습니다.</p>
       </div>
     </section>
 
-    <section id="contact" class="section">
+    <section id="contact" class="section alt">
       <div class="section-title">
         <p class="eyebrow">Contact</p>
         <h2>문의하기</h2>
@@ -193,14 +221,14 @@
       <div class="contact-card">
         <p><strong>담당자</strong> 김건일</p>
         <p><strong>이메일</strong> <a href="mailto:kiuja78@gmail.com">kiuja78@gmail.com</a></p>
-        <p><strong>사이트 목적</strong> 고객 방문관리 업무지원, 카카오맵 기반 위치 확인, 업무자동화 프로그램 업데이트 안내</p>
-        <p class="small-note">※ 사업자 정보, 대표 전화번호, 상호명은 실제 심사 제출 전에 정확한 정보로 수정하세요.</p>
+        <p><strong>사이트 목적</strong> 쿠쿠 업무 자동화 지원, 고객 방문지도 제공, 프로그램 다운로드 및 업데이트 안내</p>
+        <p class="small-note">※ 카카오맵 승인 또는 내부 공유 전에 필요한 경우 실제 담당 부서, 연락처, 운영 기준을 추가하세요.</p>
       </div>
     </section>
   </main>
 
   <footer class="site-footer">
-    <p>© 2026 방문관리 업무자동화 지원 시스템. All rights reserved.</p>
+    <p>© 2026 쿠쿠 업무 자동화 지원 시스템. All rights reserved.</p>
     <p>기획·관리: 김건일</p>
   </footer>
 

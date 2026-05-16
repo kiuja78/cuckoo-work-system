@@ -1,7 +1,7 @@
 {
+  "app_name": "쿠쿠 업무 자동화 지원 시스템",
   "latest_version": "1.0.0",
   "release_date": "2026-05-16",
   "download_url": "https://github.com/kiuja78/cuckoo-work-system/releases/latest",
-  "release_note": "초기 배포: 홈페이지, 다운로드 안내, 카카오맵 안내, 개인정보 처리방침 구성",
-  "minimum_supported_version": "1.0.0"
+  "release_note": "초기 배포: 홈페이지, 다운로드 안내, 고객 방문지도 영역, 업데이트 안내 구조 구성"
 }
