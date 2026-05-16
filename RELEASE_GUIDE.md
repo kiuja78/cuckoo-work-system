@@ -15,15 +15,15 @@
 
 ## 홈페이지 다운로드 버튼을 파일로 바로 연결하는 방법
 
-Release 게시 후 첨부 파일 주소를 복사하여 `assets/site-config.js`의 `directDownloadUrl`에 넣습니다.
+Release 게시 시 첨부 파일명을 `CUCKOO_Automation.zip`으로 고정합니다. 홈페이지는 최신 릴리즈의 이 파일명으로 바로 연결되도록 설정되어 있습니다.
 
 예시:
 
 ```js
-directDownloadUrl: "https://github.com/kiuja78/cuckoo-work-system/releases/download/v1.0.0/cuckoo-work-system-v1.0.0.zip"
+directDownloadUrl: "https://github.com/kiuja78/cuckoo-work-system/releases/latest/download/CUCKOO_Automation.zip"
 ```
 
-이렇게 하면 사용자가 홈페이지에서 `최신 버전 다운로드`를 눌렀을 때 GitHub Releases 목록 화면이 아니라 파일 다운로드로 바로 연결됩니다.
+이렇게 하면 사용자가 홈페이지에서 `최신 버전 다운로드`를 눌렀을 때 GitHub Releases 목록 화면이 아니라 `CUCKOO_Automation.zip` 파일 다운로드로 바로 연결됩니다.
 
 ## 버전 정보 수정
 

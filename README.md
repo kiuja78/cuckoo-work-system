@@ -26,11 +26,11 @@
 
 ## 다운로드 버튼 직접 연결 방법
 
-GitHub Releases에 프로그램 파일을 올린 뒤, 파일 다운로드 주소를 복사해서 아래 파일에 입력합니다.
+GitHub Releases에 프로그램 파일을 올릴 때 파일명을 `CUCKOO_Automation.zip`으로 고정하면 다운로드 버튼 주소를 매번 바꿀 필요가 없습니다.
 
 ```js
 // assets/site-config.js
-directDownloadUrl: "https://github.com/kiuja78/cuckoo-work-system/releases/download/v1.0.0/cuckoo-work-system-v1.0.0.zip"
+directDownloadUrl: "https://github.com/kiuja78/cuckoo-work-system/releases/latest/download/CUCKOO_Automation.zip"
 ```
 
-`directDownloadUrl`이 비어 있으면 최신 Release 페이지로 이동합니다.
+새 버전을 배포할 때도 Releases의 Assets에 `CUCKOO_Automation.zip`이라는 같은 이름으로 업로드하면 됩니다.
