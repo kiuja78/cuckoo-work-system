@@ -11,5 +11,5 @@ window.SITE_CONFIG = {
   directDownloadUrl: "",
 
   // directDownloadUrl이 비어 있을 때 사용할 예비 링크입니다.
-  latestReleaseUrl: "https://github.com/kiuja78/cuckoo-work-system/releases/latest"
+  latestReleaseUrl: "https://github.com/kiuja78/cuckoo-work-system/releases/download/%EC%97%85%EB%AC%B4%EC%9E%90%EB%8F%99%ED%99%94%EC%8B%9C%EC%8A%A4%ED%85%9C/V10.48.CUCKOO_Automation.zip"
 };
