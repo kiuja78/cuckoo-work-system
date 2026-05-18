@@ -34,3 +34,11 @@ directDownloadUrl: "https://github.com/kiuja78/cuckoo-work-system/releases/lates
 ```
 
 새 버전을 배포할 때도 Releases의 Assets에 `CUCKOO_Automation.zip`이라는 같은 이름으로 업로드하면 됩니다.
+
+
+## 사업자 정보
+
+- 대표: 김건일
+- 상호: 쿠쿠홈케어 부산(CUCKOO)
+- 사업자번호: 635-11-02829
+- 사업자주소: 부산광역시 기장군 정관읍 구연방곡로 120, 109동 102호
