@@ -53,8 +53,8 @@
         <div class="status-card">
           <span class="status-dot"></span>
           <span>Latest Version</span>
-          <strong id="latestVersion">v1.0.0</strong>
-          <small id="latestDate">2026.05.16</small>
+          <strong id="latestVersion">불러오는 중</strong>
+          <small id="latestDate">GitHub Releases 연동</small>
         </div>
         <div class="mini-grid">
           <div><strong>자동화</strong><span>업무 처리</span></div>
@@ -136,23 +136,56 @@
       <div class="section-title">
         <p class="eyebrow">Download</p>
         <h2>프로그램 다운로드</h2>
+        <p class="section-desc">GitHub Releases에 최신 릴리즈가 업로드되면 홈페이지의 버전, 업데이트일, 다운로드 링크가 자동으로 갱신됩니다.</p>
       </div>
-      <div class="download-panel">
+
+      <div class="release-summary" aria-label="최신 릴리즈 정보">
         <div>
-          <h3>Windows용 최신 버전</h3>
-          <p>아래 버튼을 누르면 최신 쿠쿠 업무 자동화 프로그램 파일을 바로 다운로드할 수 있습니다. 프로그램 파일은 GitHub Releases에 업로드하여 버전별로 관리합니다.</p>
-          <dl class="info-list">
-            <div><dt>프로그램명</dt><dd>쿠쿠 업무 자동화 지원 시스템</dd></div>
-            <div><dt>최신 버전</dt><dd id="downloadVersion">v10.73</dd></div>
-            <div><dt>업데이트일</dt><dd id="downloadDate">2026.05.25</dd></div>
-            <div><dt>배포 형식</dt><dd>ZIP</dd></div>
-          </dl>
+          <span class="release-label">현재 최신 릴리즈</span>
+          <strong id="downloadVersion">불러오는 중</strong>
         </div>
-        <div class="download-actions">
-          <a class="btn primary large" id="latestDownloadLink" href="https://github.com/kiuja78/cuckoo-work-system/releases/latest" target="_blank" rel="noopener">최신 버전 다운로드</a>
-          <p class="small-note">
-            ※ 다운로드 파일명은 <code>CUCKOO_Automation.zip</code>으로 고정되어 있습니다.
+        <div>
+          <span class="release-label">업데이트일</span>
+          <strong id="downloadDate">GitHub Releases 확인 중</strong>
         </div>
+        <div>
+          <span class="release-label">배포 저장소</span>
+          <strong>GitHub Releases</strong>
+        </div>
+      </div>
+
+      <div class="download-grid">
+        <article class="download-card featured">
+          <div>
+            <p class="eyebrow">CUCKOO Automation</p>
+            <h3>쿠쿠 업무 자동화 시스템</h3>
+            <p>계정관리, 고객관리, 업무 파일 정리, 고객 방문 준비를 지원하는 메인 업무 자동화 프로그램입니다.</p>
+            <dl class="info-list compact">
+              <div><dt>고정 파일명</dt><dd><code>CUCKOO_Automation.zip</code></dd></div>
+              <div><dt>배포 형식</dt><dd>ZIP</dd></div>
+            </dl>
+          </div>
+          <div class="download-actions">
+            <a class="btn primary large" id="cuckooDownloadLink" href="https://github.com/kiuja78/cuckoo-work-system/releases/latest/download/CUCKOO_Automation.zip" target="_blank" rel="noopener">쿠쿠 업무 자동화 다운로드</a>
+            <p class="small-note" id="cuckooAssetStatus">GitHub Releases 최신 릴리즈의 Assets에서 <code>CUCKOO_Automation.zip</code> 파일을 자동으로 연결합니다.</p>
+          </div>
+        </article>
+
+        <article class="download-card">
+          <div>
+            <p class="eyebrow">Sales Manager</p>
+            <h3>영업관리 시스템</h3>
+            <p>영업 현황, 수수료/실적 관리, 고객 응대 자료 관리를 위한 별도 영업관리 프로그램 다운로드 영역입니다.</p>
+            <dl class="info-list compact">
+              <div><dt>고정 파일명</dt><dd><code>Sales_Manager.zip</code></dd></div>
+              <div><dt>배포 형식</dt><dd>ZIP</dd></div>
+            </dl>
+          </div>
+          <div class="download-actions">
+            <a class="btn secondary large" id="salesDownloadLink" href="https://github.com/kiuja78/cuckoo-work-system/releases/latest/download/Sales_Manager.zip" target="_blank" rel="noopener">영업관리 시스템 다운로드</a>
+            <p class="small-note" id="salesAssetStatus">GitHub Releases 최신 릴리즈의 Assets에 <code>Sales_Manager.zip</code> 파일을 올리면 자동으로 연결됩니다.</p>
+          </div>
+        </article>
       </div>
     </section>
 
@@ -163,9 +196,9 @@
       </div>
       <div class="timeline">
         <article>
-          <span>v10.73 · 2026.05.25</span>
-          <h3>초기 배포</h3>
-          <p>쿠쿠 업무 자동화 지원 시스템 홈페이지, 다운로드 안내, 고객 방문지도 영역, 개인정보 안내, 업데이트 구조를 구성했습니다.</p>
+          <span id="releaseNoteVersion">GitHub Releases 연동</span>
+          <h3 id="releaseNoteTitle">최신 릴리즈 자동 표시</h3>
+          <p id="releaseNoteBody">GitHub Releases에 최신 파일이 업로드되면 홈페이지의 버전과 다운로드 링크가 자동으로 갱신됩니다.</p>
         </article>
         <article>
           <span>예정</span>
@@ -187,9 +220,9 @@
       </div>
       <div class="steps">
         <div><strong>1</strong><p>상단 메뉴에서 다운로드를 선택합니다.</p></div>
-        <div><strong>2</strong><p>최신 버전 다운로드 버튼을 눌러 프로그램 파일을 내려받습니다.</p></div>
+        <div><strong>2</strong><p>필요한 프로그램의 다운로드 버튼을 눌러 ZIP 파일을 내려받습니다.</p></div>
         <div><strong>3</strong><p>ZIP 파일인 경우 압축을 해제한 뒤 실행 파일을 실행합니다.</p></div>
-        <div><strong>4</strong><p>업데이트 안내를 확인하여 항상 최신 버전으로 업무를 진행합니다.</p></div>
+        <div><strong>4</strong><p>GitHub Releases와 연동된 최신 버전 정보를 확인하여 항상 최신 파일로 업무를 진행합니다.</p></div>
       </div>
     </section>
 
