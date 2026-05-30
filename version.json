@@ -1,17 +1,12 @@
 {
-  "latest_version": "GitHub Releases 자동 연동",
-  "release_api": "https://api.github.com/repos/kiuja78/cuckoo-work-system/releases/latest",
+  "site_name": "쿠쿠 자동화 시스템",
+  "site_version": "v2.0.0",
+  "release_source": "GitHub Releases latest API",
   "programs": {
-    "cuckoo_automation": {
-      "name": "쿠쿠 업무 자동화 시스템",
-      "file_name": "CUCKOO_Automation.zip",
-      "download_url": "https://github.com/kiuja78/cuckoo-work-system/releases/latest/download/CUCKOO_Automation.zip"
-    },
-    "sales_manager": {
-      "name": "영업관리 시스템",
-      "file_name": "Sales_Manager.zip",
-      "download_url": "https://github.com/kiuja78/cuckoo-work-system/releases/latest/download/Sales_Manager.zip"
-    }
-  },
-  "note": "홈페이지는 GitHub Releases API를 읽어 최신 릴리즈 버전과 업데이트일을 자동 표시합니다."
+    "CUCKOO_Automation": "CUCKOO_Automation.zip",
+    "Sales_Manager": "Sales_Manager.zip",
+    "Quote_Automation": "Quote_Automation.zip",
+    "Customer_Mobile_System": "Customer_Mobile_System.zip",
+    "Price_Commission_Calculator": "Price_Commission_Calculator.zip"
+  }
 }

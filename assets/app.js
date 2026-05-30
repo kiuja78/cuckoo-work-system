@@ -5,7 +5,7 @@ function toggleMenu() {
 
 function setText(id, value) {
   const el = document.getElementById(id);
-  if (el && value) el.textContent = value;
+  if (el && value !== undefined && value !== null) el.textContent = value;
 }
 
 function formatDate(value) {
@@ -19,19 +19,24 @@ function formatDate(value) {
 }
 
 function extractVersion(release) {
-  const source = [release.name, release.tag_name, release.body].filter(Boolean).join(' ');
+  const source = [release?.name, release?.tag_name, release?.body].filter(Boolean).join(' ');
   const match = source.match(/v?\d+(?:\.\d+)+/i);
-  return match ? `v${match[0].replace(/^v/i, '')}` : (release.name || release.tag_name || '최신 버전');
+  if (match) return `v${match[0].replace(/^v/i, '')}`;
+  return release?.name || release?.tag_name || '최신 버전';
 }
 
 function summarizeReleaseBody(body) {
-  if (!body) return 'GitHub Releases의 최신 릴리즈 정보를 기준으로 다운로드 링크를 자동 연결했습니다.';
+  if (!body) return 'GitHub Releases의 최신 릴리즈 정보를 기준으로 프로그램 다운로드 링크를 자동 연결합니다.';
   const text = body
     .replace(/[#>*_`\-]+/g, ' ')
     .replace(/\r?\n+/g, ' ')
     .replace(/\s+/g, ' ')
     .trim();
-  return text.length > 170 ? `${text.slice(0, 170)}...` : text;
+  return text.length > 220 ? `${text.slice(0, 220)}...` : text;
+}
+
+function makeLatestDownloadUrl(config, fileName) {
+  return `https://github.com/${config.githubOwner}/${config.githubRepo}/releases/latest/download/${encodeURIComponent(fileName)}`;
 }
 
 function applyReleaseInfo(version, dateText, release) {
@@ -42,26 +47,36 @@ function applyReleaseInfo(version, dateText, release) {
   setText('releaseNoteBody', summarizeReleaseBody(release?.body));
 }
 
-function connectDownloadLinks(release) {
+function connectProgramLinks(release) {
   const config = window.SITE_CONFIG || {};
   const programs = config.programs || {};
   const assets = Array.isArray(release?.assets) ? release.assets : [];
 
-  Object.values(programs).forEach((program) => {
+  Object.entries(programs).forEach(([key, program]) => {
     const link = document.getElementById(program.linkId);
     const status = document.getElementById(program.statusId);
+    const item = document.querySelector(`.download-item[data-program="${key}"]`);
+    const card = document.querySelector(`.program-card[data-program="${key}"]`);
     const matchedAsset = assets.find((asset) => asset.name === program.fileName);
+    const directUrl = matchedAsset?.browser_download_url || makeLatestDownloadUrl(config, program.fileName);
 
     if (link) {
-      link.href = matchedAsset?.browser_download_url || program.fallbackDownloadUrl || config.latestReleaseUrl || '#download';
+      link.href = matchedAsset ? directUrl : (config.latestReleaseUrl || directUrl);
+      link.textContent = matchedAsset ? '다운로드' : '릴리즈 확인';
     }
 
     if (status) {
-      if (matchedAsset) {
-        status.innerHTML = `최신 릴리즈에서 <code>${program.fileName}</code> 파일을 확인했습니다. 버튼을 누르면 바로 다운로드됩니다.`;
-      } else {
-        status.innerHTML = `최신 릴리즈 Assets에 <code>${program.fileName}</code> 파일이 아직 확인되지 않았습니다. 같은 파일명으로 업로드하면 자동 연결됩니다.`;
-      }
+      status.innerHTML = matchedAsset
+        ? `<code>${program.fileName}</code> 파일 확인 완료 · 바로 다운로드 가능`
+        : `<code>${program.fileName}</code> 파일이 최신 릴리즈 Assets에 아직 없습니다.`;
+    }
+
+    if (item) {
+      item.classList.toggle('available', Boolean(matchedAsset));
+      item.classList.toggle('missing', !matchedAsset);
+    }
+    if (card) {
+      card.classList.toggle('ready', Boolean(matchedAsset));
     }
   });
 }
@@ -87,13 +102,13 @@ async function loadLatestRelease() {
     const version = extractVersion(release);
     const dateText = formatDate(release.published_at || release.created_at) || config.fallbackDate || '';
     applyReleaseInfo(version, dateText, release);
-    connectDownloadLinks(release);
+    connectProgramLinks(release);
   } catch (error) {
     console.warn('최신 릴리즈 정보를 불러오지 못했습니다.', error);
     const version = config.fallbackVersion || '최신 버전';
     const dateText = config.fallbackDate || '';
     applyReleaseInfo(version, dateText, fallbackRelease);
-    connectDownloadLinks(fallbackRelease);
+    connectProgramLinks(fallbackRelease);
   }
 }
 

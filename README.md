@@ -1,19 +1,30 @@
-# 쿠쿠 업무 자동화 지원 시스템 홈페이지
+# 쿠쿠 자동화 시스템 홈페이지
 
-GitHub Pages용 정적 홈페이지입니다.
+GitHub Pages에서 운영하는 쿠쿠 자동화 시스템 통합 안내·다운로드 홈페이지입니다.
 
-## 주요 변경
+## 포함 프로그램
 
-- GitHub Releases 최신 릴리즈 정보를 자동으로 읽어 홈페이지 버전과 업데이트일을 표시합니다.
-- `CUCKOO_Automation.zip` 다운로드 버튼을 제공합니다.
-- `Sales_Manager.zip` 다운로드 버튼을 제공합니다.
-- 사업자 정보를 하단 푸터에 표시합니다.
+- 업무자동화 시스템: `CUCKOO_Automation.zip`
+- 영업관리 시스템: `Sales_Manager.zip`
+- 견적자동화 시스템: `Quote_Automation.zip`
+- 고객관리 모바일 시스템: `Customer_Mobile_System.zip`
+- 제품가격 수당계산 시스템: `Price_Commission_Calculator.zip`
 
-## 업로드 규칙
+## 업로드 방법
 
-최신 릴리즈의 Assets에는 아래 파일명을 정확히 맞춰 업로드하세요.
+압축을 푼 뒤 `github_pages_update_site` 폴더 안의 파일들을 GitHub 저장소 최상위에 덮어쓰기 업로드하세요.
 
-- `CUCKOO_Automation.zip`
-- `Sales_Manager.zip`
+필수 구조:
 
-파일명이 다르면 홈페이지에서 자동 확인 메시지가 “파일이 아직 확인되지 않았습니다”로 표시됩니다.
+```text
+index.html
+assets/
+version.json
+README.md
+RELEASE_GUIDE.md
+.nojekyll
+```
+
+## 다운로드 파일 운영 규칙
+
+GitHub Releases의 최신 릴리즈 Assets에 위 고정 파일명으로 ZIP 파일을 업로드하면 홈페이지의 다운로드 버튼이 자동으로 연결됩니다.
