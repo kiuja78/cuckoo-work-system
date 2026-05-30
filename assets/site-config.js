@@ -11,14 +11,16 @@ window.SITE_CONFIG = {
       version: "V10.100",
       updatedAt: "2026-05-16",
       fileName: "CUCKOO_Automation.zip",
-      linkId: "link-cuckoo"
+      linkId: "link-cuckoo",
+      forceDownload: true
     },
     sales: {
       title: "영업관리시스템",
       version: "V7.40",
       updatedAt: "2026-05-29",
       fileName: "Sales_Manager.zip",
-      linkId: "link-sales"
+      linkId: "link-sales",
+      forceDownload: true
     },
     quote: {
       title: "견적자동화시스템",

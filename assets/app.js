@@ -56,6 +56,7 @@ function connectPrograms(release) {
     }
 
     const asset = assets.find(item => item.name === program.fileName);
+    const forcedReady = Boolean(program.forceDownload);
     const href = asset?.browser_download_url || makeLatestDownloadUrl(config, program.fileName);
     const dateText = formatDate(asset?.updated_at || asset?.created_at || program.updatedAt || release?.published_at || release?.created_at || '');
 
@@ -63,7 +64,7 @@ function connectPrograms(release) {
     setProgramDate(key, dateText);
 
     if (link) {
-      if (asset) {
+      if (asset || forcedReady) {
         link.href = href;
         link.textContent = '다운로드';
         link.setAttribute('target', '_blank');
@@ -81,8 +82,8 @@ function connectPrograms(release) {
     }
 
     if (row) {
-      row.classList.toggle('ready', Boolean(asset));
-      row.classList.toggle('pending', !asset);
+      row.classList.toggle('ready', Boolean(asset || forcedReady));
+      row.classList.toggle('pending', !Boolean(asset || forcedReady));
     }
   });
 }
@@ -135,36 +136,23 @@ const MANUAL_DATA = {
       {
         title: '메인 실행 화면',
         caption: '파일 첨부, 기준월 선택, 추출 메뉴 선택 후 변환을 시작하는 메인 작업 화면',
-        type: 'workspace',
-        header: '쿠쿠 계정 관리 프로그램',
-        badges: ['기본리스트', '만기리스트', '선택리스트', '고객문자발송'],
-        fields: [
-          ['PDF 파일', '고객정보 PDF 불러오기'],
-          ['Excel 파일', '엑셀 익스포트 불러오기'],
-          ['저장 폴더', '결과 파일 저장 위치 선택'],
-          ['기준월', '2026년 5월 기준 선택']
-        ],
-        sideTitle: '진행상황',
-        sideItems: ['파일 검수', '데이터 매칭', '리스트 생성', '엑셀 저장 완료']
+        type: 'image',
+        imgSrc: 'assets/manuals/cuckoo_main.png',
+        alt: '업무자동화시스템 메인 실행 화면'
       },
       {
         title: '결과 시트 예시',
-        caption: '최종정리, 작업요약, 매니저별 목록 등 실사용 결과물 흐름 예시',
-        type: 'sheet',
-        columns: ['시트명', '용도'],
-        rows: [
-          ['최종정리', '정리된 고객 전체 목록'],
-          ['작업요약', '행정동/매니저별 요약'],
-          ['만기리스트', '만기 고객 점검'],
-          ['고객문자발송', '문자 발송용 번호 정리']
-        ]
+        caption: '최종정리, 작업요약, 만기리스트, 고객문자발송 시트 등 결과 파일 예시',
+        type: 'image',
+        imgSrc: 'assets/manuals/cuckoo_result.png',
+        alt: '업무자동화시스템 결과 시트 예시'
       }
     ],
     menus: [
-      { title: '기본리스트', desc: '고객정보를 가장 기본 형태로 정리하는 핵심 메뉴입니다. 최종정리, 작업요약 등 실무용 시트를 생성합니다.', points: ['일반 고객 전체 흐름 파악', '방문 준비 기본자료 생성'] },
-      { title: '만기리스트', desc: '의무약정과 사용개월차를 기준으로 만기 대상 고객을 선별합니다. 재렌탈 및 교체안내 대상 관리에 적합합니다.', points: ['만기 대상 집중 추출', '재렌탈 안내용 관리'] },
-      { title: '선택리스트', desc: '제품군과 개월차를 선택해 원하는 고객만 뽑아내는 메뉴입니다. 정수기/비데/공청기 등 제품별 실무 활용에 유용합니다.', points: ['제품별 맞춤 추출', '특정 개월차 타깃 관리'] },
-      { title: '고객문자발송', desc: '문자 발송용 번호를 정리해 매니저별 또는 배치별로 활용할 수 있게 준비하는 메뉴입니다.', points: ['휴대폰 번호 정리', '배치 발송 준비'] }
+      { title: '기본리스트', desc: '고객정보를 가장 기본 형태로 정리하는 핵심 메뉴입니다. 최종정리, 작업요약 등 실무용 시트를 생성합니다.', points: ['일반 고객 전체 흐름 파악', '방문 준비 기본자료 생성', '정리 결과를 출력/공유 자료로 활용'] },
+      { title: '만기리스트', desc: '의무약정과 사용개월차를 기준으로 만기 대상 고객을 선별합니다. 재렌탈 및 교체안내 대상 관리에 적합합니다.', points: ['만기 대상 집중 추출', '재렌탈 안내용 관리', '의무약정 기준 확인'] },
+      { title: '선택리스트', desc: '제품군과 개월차를 선택해 원하는 고객만 뽑아내는 메뉴입니다. 정수기/비데/공청기 등 제품별 실무 활용에 유용합니다.', points: ['제품별 맞춤 추출', '특정 개월차 타깃 관리', '제품별 프로모션 대상 선별'] },
+      { title: '고객문자발송', desc: '문자 발송용 번호를 정리해 매니저별 또는 배치별로 활용할 수 있게 준비하는 메뉴입니다.', points: ['휴대폰 번호 정리', '배치 발송 준비', '매니저별 문자 발송 분리'] }
     ]
   },
   sales: {
@@ -198,24 +186,23 @@ const MANUAL_DATA = {
       {
         title: '운영 대시보드',
         caption: '영업현황, 목표월, 팀 운영 핵심 수치를 한 눈에 보는 메인 관리 화면',
-        type: 'dashboard',
-        stats: [['영업현황', '34'], ['접수건수', '18'], ['멤버십', '12'], ['진행중', '9']],
-        tabs: ['영업현황', '접수내역', '멤버십내역', '목표관리']
+        type: 'image',
+        imgSrc: 'assets/manuals/sales_dashboard.png',
+        alt: '영업관리시스템 운영 대시보드'
       },
       {
         title: '접수/멤버십 관리 화면',
-        caption: '필터, 검색, 상태관리 중심의 운영 테이블 예시',
-        type: 'table',
-        filterChips: ['상태', '매니저', '컨택자', '전체검색'],
-        columns: ['고객명', '상태', '매니저', '컨택자'],
-        rows: [['김OO', '접수완료', '김재곤', '건일'], ['박OO', '진행중', '박은영', '건일'], ['이OO', '멤버십', '김예금', '건일']]
+        caption: '상태·매니저·컨택자 필터와 검색 중심의 운영 테이블 화면',
+        type: 'image',
+        imgSrc: 'assets/manuals/sales_management.png',
+        alt: '영업관리시스템 접수 및 멤버십 관리 화면'
       }
     ],
     menus: [
-      { title: '영업현황', desc: '팀 전체 영업 진행 상태와 목표월 흐름을 보는 기본 화면입니다. 운영 상황을 빠르게 파악할 수 있습니다.', points: ['월별 실적 흐름 확인', '목표 관리 기초 화면'] },
-      { title: '접수내역', desc: '신규 접수 건을 상태별로 관리하는 메뉴입니다. 진행단계와 담당 매니저를 함께 확인할 수 있습니다.', points: ['접수 상태 추적', '담당자별 관리'] },
-      { title: '멤버십내역', desc: '멤버십 고객을 별도로 관리하는 영역입니다. 상태, 매니저, 컨택자 기준으로 빠르게 필터링할 수 있습니다.', points: ['멤버십 고객 분리관리', '필터/검색 지원'] },
-      { title: '검색/필터', desc: '상태, 매니저, 컨택자를 바로 필터링하고 전체 검색으로 필요한 건을 즉시 찾는 실무용 기능입니다.', points: ['운영 속도 향상', '실시간 점검 편의'] }
+      { title: '영업현황', desc: '팀 전체 영업 진행 상태와 목표월 흐름을 보는 기본 화면입니다. 운영 상황을 빠르게 파악할 수 있습니다.', points: ['월별 실적 흐름 확인', '목표 관리 기초 화면', '지국/팀 운영 상황 파악'] },
+      { title: '접수내역', desc: '신규 접수 건을 상태별로 관리하는 메뉴입니다. 진행단계와 담당 매니저를 함께 확인할 수 있습니다.', points: ['접수 상태 추적', '담당자별 관리', '설치 일정 전 단계 관리'] },
+      { title: '멤버십내역', desc: '멤버십 고객을 별도로 관리하는 영역입니다. 상태, 매니저, 컨택자 기준으로 빠르게 필터링할 수 있습니다.', points: ['멤버십 고객 분리관리', '필터/검색 지원', '상태별 운영 관리'] },
+      { title: '검색/필터', desc: '상태, 매니저, 컨택자를 바로 필터링하고 전체 검색으로 필요한 건을 즉시 찾는 실무용 기능입니다.', points: ['운영 속도 향상', '실시간 점검 편의', '누락 건 빠른 재확인'] }
     ]
   },
   quote: {
@@ -263,17 +250,17 @@ const MANUAL_DATA = {
     gallery: [
       {
         title: '메인 계산 화면',
-        caption: '제품군 선택부터 모델 확인까지 빠르게 이동할 수 있는 메인 화면 예시',
-        type: 'calculator-main',
-        titleBar: '쿠쿠렌탈 제품가격 수당계산기 V78',
-        menuPills: ['정수기', '비데', '공기청정기', '안마의자'],
-        cards: ['제품 리스트', '옵션 보기', '제품 확대']
+        caption: '제품군 선택부터 모델 확인까지 빠르게 이동할 수 있는 메인 화면',
+        type: 'image',
+        imgSrc: 'assets/manuals/calculator_main.png',
+        alt: '제품가격수당계산시스템 메인 화면'
       },
       {
         title: '상세 계산 화면',
-        caption: '선택한 제품의 옵션과 가격·수당을 동시에 확인하는 상세 화면 예시',
-        type: 'calculator-detail',
-        fields: [['모델명', 'CP-XXXX'], ['약정', '36M / 60M'], ['관리방식', '4C / 12C'], ['월 렌탈료', '12,900원'], ['예상 수당', '상담용 즉시 확인']]
+        caption: '선택한 제품의 약정, 관리방식, 월 렌탈료와 수당을 확인하는 상세 화면',
+        type: 'image',
+        imgSrc: 'assets/manuals/calculator_detail.png',
+        alt: '제품가격수당계산시스템 상세 계산 화면'
       }
     ],
     menus: [
@@ -324,49 +311,8 @@ function renderGallery(items) {
     const visual = document.createElement('div');
     visual.className = `showcase-visual ${item.type || ''}`;
 
-    if (item.type === 'workspace') {
-      visual.innerHTML = `
-        <div class="mock-window">
-          <div class="window-bar"><span></span><span></span><span></span><strong>${item.header || ''}</strong></div>
-          <div class="mock-content">
-            <div>
-              <div class="chip-group">${(item.badges || []).map(v => `<span>${v}</span>`).join('')}</div>
-              <div class="field-list">${(item.fields || []).map(v => `<div><b>${v[0]}</b><span>${v[1]}</span></div>`).join('')}</div>
-            </div>
-            <div class="mock-side"><h5>${item.sideTitle || ''}</h5>${(item.sideItems || []).map(v => `<p>${v}</p>`).join('')}</div>
-          </div>
-        </div>`;
-    } else if (item.type === 'sheet') {
-      visual.innerHTML = `
-        <div class="mock-sheet">
-          <div class="sheet-head">${(item.columns || []).map(v => `<span>${v}</span>`).join('')}</div>
-          ${(item.rows || []).map(r => `<div class="sheet-row"><span>${r[0]}</span><span>${r[1]}</span></div>`).join('')}
-        </div>`;
-    } else if (item.type === 'dashboard') {
-      visual.innerHTML = `
-        <div class="mock-dashboard">
-          <div class="tab-row">${(item.tabs || []).map(v => `<span>${v}</span>`).join('')}</div>
-          <div class="stat-grid">${(item.stats || []).map(v => `<div><small>${v[0]}</small><strong>${v[1]}</strong></div>`).join('')}</div>
-        </div>`;
-    } else if (item.type === 'table') {
-      visual.innerHTML = `
-        <div class="mock-table">
-          <div class="chip-group">${(item.filterChips || []).map(v => `<span>${v}</span>`).join('')}</div>
-          <div class="sheet-head cols-4">${(item.columns || []).map(v => `<span>${v}</span>`).join('')}</div>
-          ${(item.rows || []).map(r => `<div class="table-row cols-4">${r.map(v => `<span>${v}</span>`).join('')}</div>`).join('')}
-        </div>`;
-    } else if (item.type === 'calculator-main') {
-      visual.innerHTML = `
-        <div class="calc-screen">
-          <div class="calc-title">${item.titleBar || ''}</div>
-          <div class="chip-group">${(item.menuPills || []).map(v => `<span>${v}</span>`).join('')}</div>
-          <div class="calc-cards">${(item.cards || []).map(v => `<div>${v}</div>`).join('')}</div>
-        </div>`;
-    } else if (item.type === 'calculator-detail') {
-      visual.innerHTML = `
-        <div class="calc-detail">
-          ${(item.fields || []).map(v => `<div><b>${v[0]}</b><span>${v[1]}</span></div>`).join('')}
-        </div>`;
+    if (item.type === 'image' && item.imgSrc) {
+      visual.innerHTML = `<img src="${item.imgSrc}" alt="${item.alt || item.title || ''}" loading="lazy">`;
     }
 
     const meta = document.createElement('div');
