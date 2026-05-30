@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="쿠쿠 자동화 시스템 - 업무자동화, 영업관리, 견적자동화, 고객관리 모바일, 제품가격 수당계산 시스템 안내 및 다운로드" />
+  <meta name="description" content="쿠쿠 자동화 시스템 - 업무자동화시스템, 영업관리시스템, 견적자동화시스템, 고객관리모바일시스템, 제품가격수당계산시스템 안내 및 다운로드" />
   <title>쿠쿠 자동화 시스템</title>
   <link rel="stylesheet" href="assets/styles.css" />
 </head>
@@ -20,258 +20,285 @@
       <button class="nav-toggle" type="button" aria-label="메뉴 열기" onclick="toggleMenu()">☰</button>
       <div class="nav-menu" id="navMenu">
         <a href="#overview">소개</a>
-        <a href="#programs">프로그램</a>
+        <a href="#programs">시스템</a>
         <a href="#download">다운로드</a>
-        <a href="#map">고객지도</a>
-        <a href="#updates">업데이트</a>
         <a href="#guide">사용방법</a>
-        <a href="#privacy">개인정보</a>
         <a href="#contact">문의</a>
       </div>
     </nav>
   </header>
 
   <main id="home">
-    <section class="hero section">
-      <div class="hero-copy">
-        <p class="eyebrow">업무 자동화 · 영업관리 · 견적자동화 · 고객관리 · 수당계산</p>
-        <h1>쿠쿠 현장 업무를 하나로 연결하는 자동화 시스템 허브</h1>
-        <p class="hero-desc">
-          쿠쿠 자동화 시스템은 현장에서 반복되는 업무를 더 빠르고 정확하게 처리하기 위한 프로그램 안내·다운로드·업데이트 지원 홈페이지입니다.
-          업무자동화, 영업관리, 견적자동화, 고객관리 모바일, 제품가격 수당계산 시스템을 한 곳에서 확인할 수 있습니다.
-        </p>
-        <div class="hero-actions">
-          <a class="btn primary" href="#download">프로그램 다운로드</a>
-          <a class="btn secondary" href="#programs">시스템 전체 보기</a>
+    <section class="hero-wrap">
+      <div class="hero section">
+        <div class="hero-copy">
+          <p class="eyebrow">CUCKOO AUTOMATION SYSTEM HUB</p>
+          <h1>쿠쿠 현장 업무를<br>하나로 연결하는 자동화 시스템 허브</h1>
+          <p class="hero-desc">
+            현장에서 사용하는 주요 프로그램을 한 곳에서 소개하고, 필요한 시스템만 바로 다운로드할 수 있도록 구성한 통합 홈페이지입니다.
+            업무자동화, 영업관리, 견적자동화, 고객관리 모바일, 제품가격 수당계산 시스템까지 전체 흐름을 직관적으로 확인할 수 있습니다.
+          </p>
+          <div class="hero-actions">
+            <a class="btn primary" href="#download">프로그램 다운로드</a>
+          </div>
+          <div class="pill-row" aria-label="주요 시스템">
+            <span>업무자동화시스템</span>
+            <span>영업관리시스템</span>
+            <span>견적자동화시스템</span>
+            <span>고객관리모바일시스템</span>
+            <span>제품가격수당계산시스템</span>
+          </div>
         </div>
-        <div class="trust-row" aria-label="핵심 기능">
-          <span>파일 정리</span>
-          <span>고객 방문</span>
-          <span>지도 연동</span>
-          <span>견적 지원</span>
-          <span>수당 계산</span>
+        <div class="hero-visual" aria-hidden="true">
+          <div class="visual-stage">
+            <div class="stage-card card-main">
+              <span>Automation Hub</span>
+              <strong>5 Systems</strong>
+              <small>현장업무 · 관리 · 견적 · 모바일 · 계산</small>
+            </div>
+            <div class="stage-card card-sub one">
+              <span>업무자동화</span>
+              <strong>파일정리 · 지도연동</strong>
+            </div>
+            <div class="stage-card card-sub two">
+              <span>영업관리</span>
+              <strong>접수 · 멤버십 · 현황관리</strong>
+            </div>
+            <div class="stage-orb orb-one"></div>
+            <div class="stage-orb orb-two"></div>
+          </div>
         </div>
       </div>
-      <aside class="hero-panel" aria-label="최신 릴리즈 정보">
-        <div class="version-card">
-          <span class="status-dot"></span>
-          <span class="label">Latest Release</span>
-          <strong id="latestVersion">불러오는 중</strong>
-          <small id="latestDate">GitHub Releases 연동</small>
+      <div class="marquee">
+        <div class="marquee-track">
+          <span>CUCKOO AUTOMATION SYSTEM HUB</span>
+          <span>쿠쿠 현장 업무를 하나로 연결하는 자동화 시스템 허브</span>
+          <span>PROGRAM DOWNLOAD · SMART UPDATE · SYSTEM GUIDE</span>
+          <span>CUCKOO AUTOMATION SYSTEM HUB</span>
+          <span>쿠쿠 현장 업무를 하나로 연결하는 자동화 시스템 허브</span>
+          <span>PROGRAM DOWNLOAD · SMART UPDATE · SYSTEM GUIDE</span>
         </div>
-        <div class="metric-grid">
-          <div><strong>5</strong><span>운영 시스템</span></div>
-          <div><strong>ZIP</strong><span>배포 형식</span></div>
-          <div><strong>GitHub</strong><span>업데이트</span></div>
-          <div><strong>Map</strong><span>지도 확장</span></div>
-        </div>
-      </aside>
+      </div>
     </section>
 
     <section id="overview" class="section compact-section">
-      <div class="section-title center">
-        <p class="eyebrow">System Hub</p>
-        <h2>하나의 홈페이지에서 모든 프로그램을 안내합니다</h2>
+      <div class="section-title center narrow">
+        <p class="eyebrow">Overview</p>
+        <h2>홈페이지를 단일 다운로드 페이지에서 통합 시스템 허브로 확장했습니다</h2>
         <p class="section-desc">
-          기존 업무자동화 시스템 중심 홈페이지에서 확장하여, 현재 제작·운영 중인 쿠쿠 업무지원 프로그램 전체를 소개하고 다운로드할 수 있는 구조로 개편했습니다.
+          필요한 시스템만 선택해서 내려받을 수 있고, 최신 업데이트를 지원합니다.
+          복잡한 설명보다 실제 현장 사용 흐름이 쉽게 보이도록 심플하고 직관적인 구조로 재구성했습니다.
         </p>
       </div>
       <div class="overview-grid">
         <article class="overview-card">
-          <span class="icon">01</span>
-          <h3>업무 흐름 단순화</h3>
-          <p>반복되는 엑셀 정리, 고객정보 확인, 방문 준비, 자료 취합을 프로그램별로 분리해 더 쉽게 사용할 수 있도록 구성했습니다.</p>
+          <span class="num">01</span>
+          <h3>프로그램 통합 안내</h3>
+          <p>지금까지 제작된 주요 시스템을 한 페이지에서 구조적으로 정리해, 어떤 프로그램이 어떤 목적에 쓰이는지 빠르게 파악할 수 있습니다.</p>
         </article>
         <article class="overview-card">
-          <span class="icon">02</span>
-          <h3>프로그램별 다운로드</h3>
-          <p>필요한 시스템만 선택해서 내려받을 수 있고, GitHub Releases 최신 릴리즈와 연결되어 업데이트 관리가 편합니다.</p>
+          <span class="num">02</span>
+          <h3>선택형 다운로드</h3>
+          <p>업무자동화시스템부터 수당계산시스템까지 필요한 시스템만 선택해 내려받을 수 있도록 구성했습니다.</p>
         </article>
         <article class="overview-card">
-          <span class="icon">03</span>
-          <h3>현장 사용성 중심</h3>
-          <p>고객 방문, 영업관리, 견적 작성, 모바일 고객관리, 제품가격·수당 확인처럼 현장에서 바로 필요한 기능을 기준으로 정리했습니다.</p>
+          <span class="num">03</span>
+          <h3>업데이트 관리 단순화</h3>
+          <p>GitHub Releases와 연결해 다운로드 파일을 안정적으로 관리하고, 프로그램별 배포 파일을 한 번에 안내합니다.</p>
         </article>
       </div>
     </section>
 
     <section id="programs" class="section alt">
       <div class="section-title">
-        <p class="eyebrow">Programs</p>
+        <p class="eyebrow">System Line-up</p>
         <h2>구성 프로그램</h2>
-        <p class="section-desc">각 시스템은 기능별로 독립 운영하면서, 다운로드와 업데이트는 이 홈페이지에서 통합 안내합니다.</p>
+        <p class="section-desc">각 프로그램의 역할을 쉽게 이해할 수 있도록 핵심 기능 중심으로 정리했습니다.</p>
       </div>
-      <div class="program-grid" id="programGrid">
-        <article class="program-card highlight" data-program="cuckoo">
-          <div class="program-top"><span class="badge">Main</span><span class="program-code">CUCKOO</span></div>
-          <h3>업무자동화 시스템</h3>
-          <p>고객정보 파일 정리, 계정 관리, 고객 방문 준비, 지도 연동 기반의 메인 업무 자동화 프로그램입니다.</p>
+      <div class="program-grid">
+        <article class="program-card tone-blue">
+          <div class="program-thumb">
+            <span class="thumb-label">Main Program</span>
+            <strong>Automation</strong>
+            <small>파일 정리 · 방문 준비 · 지도 확장</small>
+          </div>
+          <h3>업무자동화시스템</h3>
+          <p>고객정보 파일 정리, 계정 관리, 방문 준비, 지도 연동 기반 기능을 위한 메인 자동화 시스템입니다.</p>
           <ul>
-            <li>엑셀/PDF 업무 파일 정리</li>
-            <li>고객 방문 정보 확인</li>
-            <li>카카오맵 연동 확장</li>
+            <li>PDF/엑셀 자동 정리</li>
+            <li>고객 방문 리스트 지원</li>
+            <li>현장 업무 전처리 최적화</li>
           </ul>
         </article>
-        <article class="program-card" data-program="sales">
-          <div class="program-top"><span class="badge">Sales</span><span class="program-code">SM</span></div>
-          <h3>영업관리 시스템</h3>
-          <p>영업현황, 접수내역, 멤버십 내역, 컨택 관리 등 영업 흐름을 관리하기 위한 시스템입니다.</p>
+        <article class="program-card tone-indigo">
+          <div class="program-thumb">
+            <span class="thumb-label">Sales Flow</span>
+            <strong>Sales Manager</strong>
+            <small>접수 · 멤버십 · 영업현황</small>
+          </div>
+          <h3>영업관리시스템</h3>
+          <p>영업현황, 접수내역, 멤버십 내역, 컨택 관리 등 영업 흐름 전체를 관리하는 시스템입니다.</p>
           <ul>
-            <li>영업현황 관리</li>
-            <li>접수/멤버십 관리</li>
-            <li>목표월 기준 운영</li>
+            <li>영업현황 및 목표월 관리</li>
+            <li>접수/멤버십 데이터 관리</li>
+            <li>필터/검색 기반 운영</li>
           </ul>
         </article>
-        <article class="program-card" data-program="quote">
-          <div class="program-top"><span class="badge">Quote</span><span class="program-code">QA</span></div>
-          <h3>견적자동화 시스템</h3>
-          <p>제품 선택, 가격 정보, 대표 이미지, 견적서 출력 흐름을 자동화하기 위한 시스템입니다.</p>
+        <article class="program-card tone-cyan">
+          <div class="program-thumb">
+            <span class="thumb-label">Quotation</span>
+            <strong>Quote Auto</strong>
+            <small>제품 선택 · 가격 · 견적 출력</small>
+          </div>
+          <h3>견적자동화시스템</h3>
+          <p>제품 선택, 가격 정보, 대표 이미지, 견적서 출력 흐름을 자동화하는 견적 지원 시스템입니다.</p>
           <ul>
             <li>제품별 견적 생성</li>
             <li>대표 이미지 연동</li>
-            <li>견적서 출력 지원</li>
+            <li>견적서 작성 시간 단축</li>
           </ul>
         </article>
-        <article class="program-card" data-program="mobile">
-          <div class="program-top"><span class="badge">Mobile</span><span class="program-code">CM</span></div>
-          <h3>고객관리 모바일 시스템</h3>
-          <p>모바일 환경에서 고객정보, 방문 위치, 연락 흐름을 확인하기 위한 고객관리 지원 시스템입니다.</p>
+        <article class="program-card tone-purple">
+          <div class="program-thumb">
+            <span class="thumb-label">Mobile</span>
+            <strong>Customer Care</strong>
+            <small>모바일 확인 · 위치 · 응대 지원</small>
+          </div>
+          <h3>고객관리모바일시스템</h3>
+          <p>모바일 환경에서 고객정보, 방문 위치, 연락 흐름을 빠르게 확인할 수 있도록 구성한 고객관리 지원 시스템입니다.</p>
           <ul>
-            <li>모바일 고객 확인</li>
-            <li>방문 위치 확인</li>
-            <li>현장 응대 지원</li>
+            <li>모바일 화면 최적화</li>
+            <li>방문 위치 및 고객 확인</li>
+            <li>현장 응대 편의성 강화</li>
           </ul>
         </article>
-        <article class="program-card" data-program="calculator">
-          <div class="program-top"><span class="badge">Calc</span><span class="program-code">PC</span></div>
-          <h3>제품가격 수당계산 시스템</h3>
+        <article class="program-card tone-green">
+          <div class="program-thumb">
+            <span class="thumb-label">Calculator</span>
+            <strong>Price & Commission</strong>
+            <small>제품가격 · 수당 · 조건 계산</small>
+          </div>
+          <h3>제품가격수당계산시스템</h3>
           <p>제품군, 모델, 약정, 관리방식에 따른 가격과 수당 정보를 빠르게 확인하기 위한 계산 시스템입니다.</p>
           <ul>
-            <li>제품별 가격 확인</li>
+            <li>제품별 가격 조회</li>
             <li>조건별 수당 계산</li>
-            <li>제품군별 테이블 지원</li>
+            <li>현장 영업용 빠른 확인</li>
           </ul>
         </article>
       </div>
     </section>
 
     <section id="download" class="section">
-      <div class="section-title center">
+      <div class="section-title center narrow">
         <p class="eyebrow">Download Center</p>
         <h2>프로그램 다운로드</h2>
-        <p class="section-desc">
-          최신 릴리즈의 Assets에 아래 고정 파일명으로 ZIP 파일을 업로드하면 다운로드 버튼이 자동으로 연결됩니다.
-        </p>
+        <p class="section-desc">필요한 시스템만 선택해서 내려받을 수 있고, 최신 업데이트를 지원합니다.</p>
       </div>
-      <div class="release-summary" aria-label="최신 릴리즈 요약">
-        <div><span>현재 최신 릴리즈</span><strong id="downloadVersion">불러오는 중</strong></div>
-        <div><span>업데이트일</span><strong id="downloadDate">GitHub 확인 중</strong></div>
-        <div><span>배포 방식</span><strong>GitHub Releases</strong></div>
-      </div>
-      <div class="download-list" id="downloadList">
-        <article class="download-item" data-program="cuckoo">
-          <div><h3>업무자동화 시스템</h3><p>파일명: <code>CUCKOO_Automation.zip</code></p><small id="status-cuckoo">최신 릴리즈 확인 중</small></div>
-          <a class="btn primary" id="link-cuckoo" href="#" target="_blank" rel="noopener">다운로드</a>
-        </article>
-        <article class="download-item" data-program="sales">
-          <div><h3>영업관리 시스템</h3><p>파일명: <code>Sales_Manager.zip</code></p><small id="status-sales">최신 릴리즈 확인 중</small></div>
-          <a class="btn primary" id="link-sales" href="#" target="_blank" rel="noopener">다운로드</a>
-        </article>
-        <article class="download-item" data-program="quote">
-          <div><h3>견적자동화 시스템</h3><p>파일명: <code>Quote_Automation.zip</code></p><small id="status-quote">최신 릴리즈 확인 중</small></div>
-          <a class="btn primary" id="link-quote" href="#" target="_blank" rel="noopener">다운로드</a>
-        </article>
-        <article class="download-item" data-program="mobile">
-          <div><h3>고객관리 모바일 시스템</h3><p>파일명: <code>Customer_Mobile_System.zip</code></p><small id="status-mobile">최신 릴리즈 확인 중</small></div>
-          <a class="btn primary" id="link-mobile" href="#" target="_blank" rel="noopener">다운로드</a>
-        </article>
-        <article class="download-item" data-program="calculator">
-          <div><h3>제품가격 수당계산 시스템</h3><p>파일명: <code>Price_Commission_Calculator.zip</code></p><small id="status-calculator">최신 릴리즈 확인 중</small></div>
-          <a class="btn primary" id="link-calculator" href="#" target="_blank" rel="noopener">다운로드</a>
-        </article>
-      </div>
-      <div class="download-note">
-        <strong>업로드 규칙</strong>
-        <p>각 프로그램 ZIP 파일명은 대소문자와 언더바까지 동일해야 합니다. 최신 릴리즈에 파일이 없으면 버튼은 릴리즈 페이지로 연결됩니다.</p>
-      </div>
-    </section>
 
-    <section id="map" class="section alt">
-      <div class="split">
-        <div>
-          <p class="eyebrow">Customer Map</p>
-          <h2>고객 방문지도 제공</h2>
-          <p>
-            고객 주소를 지도 위에 표시하여 방문 위치 확인, 담당자별 동선 파악, 현장 업무 준비를 돕는 기능입니다.
-            카카오맵 JavaScript 키 등록 후 실제 지도 영역으로 확장할 수 있습니다.
-          </p>
-          <ul class="check-list">
-            <li>고객 주소 기반 위치 확인</li>
-            <li>고객명 마커 표시</li>
-            <li>담당자별 방문 동선 확인</li>
-            <li>모바일 고객관리 시스템과 확장 가능</li>
-          </ul>
+      <div class="download-table-wrap">
+        <div class="download-table-head desktop-only">
+          <span>시스템명</span>
+          <span>설명</span>
+          <span>현재 버전</span>
+          <span>업데이트일</span>
+          <span>파일명</span>
+          <span>다운로드</span>
         </div>
-        <div class="map-placeholder" id="mapBox">
-          <div>
-            <strong>카카오맵 연동 영역</strong>
-            <span>JavaScript 키 등록 후 고객 방문지도 표시</span>
-          </div>
-        </div>
-      </div>
-    </section>
 
-    <section id="updates" class="section">
-      <div class="section-title">
-        <p class="eyebrow">Release Notes</p>
-        <h2>업데이트 안내</h2>
+        <div class="download-table" id="downloadTable">
+          <article class="download-row" data-program="cuckoo">
+            <div class="row-system">
+              <strong>업무자동화시스템</strong>
+              <small>메인 자동화 시스템</small>
+            </div>
+            <div class="row-desc">고객정보 정리, 방문 준비, 현장업무 전처리 지원</div>
+            <div class="row-version" id="version-cuckoo">V10.110</div>
+            <div class="row-date" id="date-cuckoo">확인 중</div>
+            <div class="row-file"><code>CUCKOO_Automation.zip</code></div>
+            <div class="row-action"><a class="btn primary" id="link-cuckoo" href="#" target="_blank" rel="noopener">다운로드</a></div>
+          </article>
+
+          <article class="download-row" data-program="sales">
+            <div class="row-system">
+              <strong>영업관리시스템</strong>
+              <small>영업/접수 관리</small>
+            </div>
+            <div class="row-desc">영업현황, 접수내역, 멤버십 내역, 컨택 관리</div>
+            <div class="row-version" id="version-sales">V7.40</div>
+            <div class="row-date" id="date-sales">확인 중</div>
+            <div class="row-file"><code>Sales_Manager.zip</code></div>
+            <div class="row-action"><a class="btn primary" id="link-sales" href="#" target="_blank" rel="noopener">다운로드</a></div>
+          </article>
+
+          <article class="download-row" data-program="quote">
+            <div class="row-system">
+              <strong>견적자동화시스템</strong>
+              <small>견적 지원</small>
+            </div>
+            <div class="row-desc">제품 선택, 가격 정보, 이미지 연동, 견적서 생성</div>
+            <div class="row-version" id="version-quote">V1.00</div>
+            <div class="row-date" id="date-quote">확인 중</div>
+            <div class="row-file"><code>Quote_Automation.zip</code></div>
+            <div class="row-action"><a class="btn primary" id="link-quote" href="#" target="_blank" rel="noopener">다운로드</a></div>
+          </article>
+
+          <article class="download-row" data-program="mobile">
+            <div class="row-system">
+              <strong>고객관리모바일시스템</strong>
+              <small>모바일 고객관리</small>
+            </div>
+            <div class="row-desc">모바일 고객 확인, 방문 위치 확인, 현장 응대 지원</div>
+            <div class="row-version" id="version-mobile">V1.00</div>
+            <div class="row-date" id="date-mobile">확인 중</div>
+            <div class="row-file"><code>Customer_Mobile_System.zip</code></div>
+            <div class="row-action"><a class="btn primary" id="link-mobile" href="#" target="_blank" rel="noopener">다운로드</a></div>
+          </article>
+
+          <article class="download-row" data-program="calculator">
+            <div class="row-system">
+              <strong>제품가격수당계산시스템</strong>
+              <small>가격/수당 계산</small>
+            </div>
+            <div class="row-desc">제품가격, 약정별 조건, 수당 정보 빠른 확인</div>
+            <div class="row-version" id="version-calculator">V77</div>
+            <div class="row-date" id="date-calculator">확인 중</div>
+            <div class="row-file"><code>Price_Commission_Calculator.zip</code></div>
+            <div class="row-action"><a class="btn primary" id="link-calculator" href="#" target="_blank" rel="noopener">다운로드</a></div>
+          </article>
+        </div>
       </div>
-      <div class="timeline">
-        <article>
-          <span id="releaseNoteVersion">GitHub Releases 연동</span>
-          <h3 id="releaseNoteTitle">최신 릴리즈 자동 표시</h3>
-          <p id="releaseNoteBody">GitHub Releases에 최신 파일이 업로드되면 홈페이지의 버전과 다운로드 링크가 자동으로 갱신됩니다.</p>
-        </article>
-        <article>
-          <span>운영 기준</span>
-          <h3>프로그램별 파일명 고정</h3>
-          <p>다운로드 안정성을 위해 각 프로그램은 정해진 ZIP 파일명을 유지하고, 최신 릴리즈 Assets에 같은 이름으로 업로드합니다.</p>
-        </article>
-        <article>
-          <span>확장 예정</span>
-          <h3>프로그램별 개별 버전 관리</h3>
-          <p>향후 각 시스템마다 별도의 버전 정보를 표시하는 구조로 확장할 수 있습니다.</p>
-        </article>
+      <div class="download-bottom-note">
+        <p>각 시스템의 현재 버전은 프로그램별로 관리하며, 다운로드 파일은 GitHub Releases 최신 릴리즈 자산과 연결됩니다.</p>
       </div>
     </section>
 
     <section id="guide" class="section alt compact-section">
-      <div class="section-title center">
+      <div class="section-title center narrow">
         <p class="eyebrow">Guide</p>
         <h2>사용 방법</h2>
       </div>
       <div class="steps">
-        <div><strong>1</strong><p>필요한 시스템을 확인합니다.</p></div>
-        <div><strong>2</strong><p>다운로드 메뉴에서 해당 프로그램 ZIP 파일을 내려받습니다.</p></div>
-        <div><strong>3</strong><p>압축을 해제하고 실행 파일을 실행합니다.</p></div>
-        <div><strong>4</strong><p>새 버전이 올라오면 같은 버튼으로 최신 파일을 다시 받습니다.</p></div>
-      </div>
-    </section>
-
-    <section id="privacy" class="section">
-      <div class="section-title">
-        <p class="eyebrow">Privacy</p>
-        <h2>개인정보 안내</h2>
-      </div>
-      <div class="policy-box">
-        <h3>개인정보 처리 안내</h3>
-        <p>본 사이트와 업무지원 프로그램은 고객 방문 관리 및 업무 처리 목적을 위해 필요한 최소한의 정보를 활용합니다.</p>
-        <h4>1. 활용 항목</h4>
-        <p>고객명, 주소, 연락처, 방문 관리 관련 정보</p>
-        <h4>2. 활용 목적</h4>
-        <p>고객 방문 준비, 지도 기반 위치 확인, 담당자별 업무 확인, 고객 응대 및 사후 관리</p>
-        <h4>3. 관리 원칙</h4>
-        <p>업무 목적 외 사용을 제한하며, 외부에 무단 제공하지 않습니다.</p>
+        <div>
+          <strong>01</strong>
+          <h3>필요한 시스템 확인</h3>
+          <p>현재 필요한 업무에 맞는 시스템을 먼저 확인합니다.</p>
+        </div>
+        <div>
+          <strong>02</strong>
+          <h3>프로그램 다운로드</h3>
+          <p>다운로드 영역에서 원하는 프로그램만 선택해 내려받습니다.</p>
+        </div>
+        <div>
+          <strong>03</strong>
+          <h3>압축 해제 후 실행</h3>
+          <p>ZIP 파일을 풀고 실행 파일 또는 사용 파일을 실행합니다.</p>
+        </div>
+        <div>
+          <strong>04</strong>
+          <h3>최신 업데이트 확인</h3>
+          <p>같은 다운로드 버튼으로 최신 파일을 다시 받아 최신 상태를 유지합니다.</p>
+        </div>
       </div>
     </section>
 
@@ -280,7 +307,7 @@
         <div>
           <p class="eyebrow">Contact</p>
           <h2>문의 및 관리</h2>
-          <p>프로그램 다운로드, 업데이트, 카카오맵 연동, 오류 수정 문의는 관리자에게 연락해 주세요.</p>
+          <p>프로그램 다운로드, 업데이트, 오류 수정 관련 문의는 아래 이메일로 연락해 주세요.</p>
         </div>
         <a class="btn secondary" href="mailto:kiuja78@gmail.com">kiuja78@gmail.com</a>
       </div>
@@ -291,7 +318,7 @@
     <div class="business-info" aria-label="사업자 정보">
       <strong>사업자 정보</strong>
       <p>대표 : 김건일 / 상호 : 쿠쿠홈케어 부산(CUCKOO) / 사업자번호 : 635-11-02829 / 사업자주소 : 부산광역시 기장군 정관읍 구연방곡로 120, 109동 102호</p>
-      <p>본 사이트는 쿠쿠 자동화 시스템 안내, 프로그램 다운로드, 업데이트 안내, 고객 방문지도 제공을 위한 업무지원 페이지입니다.</p>
+      <p>본 사이트는 쿠쿠 자동화 시스템 안내, 프로그램 다운로드, 업데이트 지원을 위한 업무지원 페이지입니다.</p>
     </div>
     <p>© 2026 쿠쿠 자동화 시스템. All rights reserved.</p>
     <p>기획·관리 : 김건일</p>
@@ -299,9 +326,5 @@
 
   <script src="assets/site-config.js"></script>
   <script src="assets/app.js"></script>
-  <!--
-  카카오맵 연결 시 아래 스크립트의 KAKAO_JAVASCRIPT_KEY를 실제 JavaScript 키로 교체하고 주석을 해제하세요.
-  <script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=KAKAO_JAVASCRIPT_KEY&libraries=services"></script>
-  -->
 </body>
 </html>

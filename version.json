@@ -1,12 +1,27 @@
 {
   "site_name": "쿠쿠 자동화 시스템",
-  "site_version": "v2.0.0",
-  "release_source": "GitHub Releases latest API",
+  "site_version": "v3.0.0",
+  "structure": "integrated system hub",
   "programs": {
-    "CUCKOO_Automation": "CUCKOO_Automation.zip",
-    "Sales_Manager": "Sales_Manager.zip",
-    "Quote_Automation": "Quote_Automation.zip",
-    "Customer_Mobile_System": "Customer_Mobile_System.zip",
-    "Price_Commission_Calculator": "Price_Commission_Calculator.zip"
+    "업무자동화시스템": {
+      "version": "V10.110",
+      "fileName": "CUCKOO_Automation.zip"
+    },
+    "영업관리시스템": {
+      "version": "V7.40",
+      "fileName": "Sales_Manager.zip"
+    },
+    "견적자동화시스템": {
+      "version": "V1.00",
+      "fileName": "Quote_Automation.zip"
+    },
+    "고객관리모바일시스템": {
+      "version": "V1.00",
+      "fileName": "Customer_Mobile_System.zip"
+    },
+    "제품가격수당계산시스템": {
+      "version": "V77",
+      "fileName": "Price_Commission_Calculator.zip"
+    }
   }
 }
