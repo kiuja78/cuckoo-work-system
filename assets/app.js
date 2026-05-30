@@ -1,3 +1,4 @@
+
 function toggleMenu() {
   const menu = document.getElementById('navMenu');
   if (menu) menu.classList.toggle('open');
@@ -33,7 +34,6 @@ function connectPrograms(release) {
     const row = document.querySelector(`.download-row[data-program="${key}"]`);
     const link = document.getElementById(program.linkId);
 
-    // 웹으로 사용하는 시스템은 GitHub Releases를 거치지 않고 지정된 웹앱 주소로 바로 연결합니다.
     if (program.type === 'web') {
       const dateText = formatDate(program.updatedAt || '');
       setProgramVersion(key, program.version);
@@ -103,68 +103,120 @@ async function loadReleases() {
   }
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-  loadReleases();
-  initManualCards();
-});
-
-
 const MANUAL_DATA = {
   cuckoo: {
-    category: 'MAIN PROGRAM CATALOG',
+    category: 'MAIN PROGRAM MANUAL',
     title: '업무자동화시스템',
-    summary: '고객정보 파일 정리, 계정 관리, 고객 방문 준비, 지도 연동 확장을 위한 쿠쿠 현장 업무의 메인 자동화 시스템입니다.',
+    summary: '고객정보 PDF·엑셀 파일을 자동으로 정리하고, 계정 관리와 방문 준비용 자료를 빠르게 만드는 메인 자동화 시스템입니다.',
     version: 'V10.100',
-    mode: 'ZIP Download',
-    actionText: '프로그램 다운로드',
+    mode: 'Windows Program',
     actionKey: 'cuckoo',
+    theme: 'blue',
     features: [
-      'PDF/엑셀 기반 고객정보 자동 정리',
-      '고객번호·상품명·사용개월차 등 업무 기준 데이터 정리',
-      '고객 방문 준비용 리스트와 업무용 자료 생성',
-      '고객 방문지도와 연동 가능한 데이터 구조 지원'
+      'PDF/엑셀 고객정보 자동 정리',
+      '기준월 기준 개월차 계산 및 만기 리스트 생성',
+      '선택 추출·고객문자발송용 자료 생성',
+      '현장 방문 준비용 출력자료와 요약자료 정리'
     ],
     steps: [
-      '프로그램을 다운로드하고 압축을 해제합니다.',
-      '업무 파일을 준비한 뒤 프로그램에서 불러옵니다.',
-      '기준월과 필요한 추출 조건을 선택합니다.',
-      '정리된 결과 파일을 확인하고 현장 업무에 활용합니다.'
+      'PDF 또는 엑셀 파일을 불러옵니다.',
+      '기준월과 추출 메뉴를 선택합니다.',
+      '추출변환시작을 눌러 결과 파일을 생성합니다.',
+      '생성된 리스트를 방문 준비, 문자 발송, 출력 자료로 활용합니다.'
     ],
     useCases: [
-      '월별 고객 계정 파일을 빠르게 정리해야 할 때',
-      '방문 대상 고객을 기준별로 분류해야 할 때',
-      '고객 주소 기반 지도 연동 자료가 필요할 때',
-      '반복되는 수작업 정리를 줄이고 싶을 때'
+      '매월 고객 계정 파일을 정리할 때',
+      '만기고객/특정 제품군만 빠르게 분리할 때',
+      '방문 준비용 고객목록과 요약 시트가 필요할 때',
+      '수작업 엑셀 정리를 줄이고 싶을 때'
     ],
-    note: '업무자동화시스템은 전체 자동화 허브의 중심 프로그램입니다. 고객정보 파일 구조가 바뀌면 추출 기준도 함께 점검하는 것이 좋습니다.'
+    note: '기준월 변경과 입력 파일 형식 확인이 가장 중요합니다. 프로그램 실행 전 PDF/엑셀 원본을 먼저 백업해 두는 것을 권장합니다.',
+    gallery: [
+      {
+        title: '메인 실행 화면',
+        caption: '파일 첨부, 기준월 선택, 추출 메뉴 선택 후 변환을 시작하는 메인 작업 화면',
+        type: 'workspace',
+        header: '쿠쿠 계정 관리 프로그램',
+        badges: ['기본리스트', '만기리스트', '선택리스트', '고객문자발송'],
+        fields: [
+          ['PDF 파일', '고객정보 PDF 불러오기'],
+          ['Excel 파일', '엑셀 익스포트 불러오기'],
+          ['저장 폴더', '결과 파일 저장 위치 선택'],
+          ['기준월', '2026년 5월 기준 선택']
+        ],
+        sideTitle: '진행상황',
+        sideItems: ['파일 검수', '데이터 매칭', '리스트 생성', '엑셀 저장 완료']
+      },
+      {
+        title: '결과 시트 예시',
+        caption: '최종정리, 작업요약, 매니저별 목록 등 실사용 결과물 흐름 예시',
+        type: 'sheet',
+        columns: ['시트명', '용도'],
+        rows: [
+          ['최종정리', '정리된 고객 전체 목록'],
+          ['작업요약', '행정동/매니저별 요약'],
+          ['만기리스트', '만기 고객 점검'],
+          ['고객문자발송', '문자 발송용 번호 정리']
+        ]
+      }
+    ],
+    menus: [
+      { title: '기본리스트', desc: '고객정보를 가장 기본 형태로 정리하는 핵심 메뉴입니다. 최종정리, 작업요약 등 실무용 시트를 생성합니다.', points: ['일반 고객 전체 흐름 파악', '방문 준비 기본자료 생성'] },
+      { title: '만기리스트', desc: '의무약정과 사용개월차를 기준으로 만기 대상 고객을 선별합니다. 재렌탈 및 교체안내 대상 관리에 적합합니다.', points: ['만기 대상 집중 추출', '재렌탈 안내용 관리'] },
+      { title: '선택리스트', desc: '제품군과 개월차를 선택해 원하는 고객만 뽑아내는 메뉴입니다. 정수기/비데/공청기 등 제품별 실무 활용에 유용합니다.', points: ['제품별 맞춤 추출', '특정 개월차 타깃 관리'] },
+      { title: '고객문자발송', desc: '문자 발송용 번호를 정리해 매니저별 또는 배치별로 활용할 수 있게 준비하는 메뉴입니다.', points: ['휴대폰 번호 정리', '배치 발송 준비'] }
+    ]
   },
   sales: {
-    category: 'SALES MANAGEMENT CATALOG',
+    category: 'SALES MANAGEMENT MANUAL',
     title: '영업관리시스템',
-    summary: '영업현황, 접수내역, 멤버십 내역, 컨택 관리 등 지국·팀 단위 영업 흐름을 관리하기 위한 시스템입니다.',
+    summary: '영업현황, 접수내역, 멤버십 내역, 컨택 흐름을 한 곳에서 관리하는 영업 운영 시스템입니다.',
     version: 'V7.40',
-    mode: 'ZIP Download',
-    actionText: '프로그램 다운로드',
+    mode: 'Windows Program',
     actionKey: 'sales',
+    theme: 'indigo',
     features: [
-      '영업현황과 목표월 기준 데이터 관리',
-      '접수내역 및 멤버십 내역 관리',
-      '상태·매니저·컨택자 기준 필터링',
-      '현장 영업 흐름을 한 화면에서 확인'
+      '영업현황과 목표월 관리',
+      '접수내역·멤버십 내역 통합 운영',
+      '상태·매니저·컨택자 필터와 검색',
+      '팀 운영 흐름을 한 화면에서 관리'
     ],
     steps: [
-      '영업관리시스템을 다운로드하고 실행합니다.',
-      '목표월과 관리 기준을 확인합니다.',
-      '접수내역, 멤버십 내역, 컨택 현황을 입력 또는 확인합니다.',
-      '필터와 검색 기능으로 필요한 내역을 빠르게 확인합니다.'
+      '프로그램을 실행하고 목표월을 확인합니다.',
+      '영업현황과 접수내역을 입력 또는 확인합니다.',
+      '멤버십 내역과 상태 필터를 점검합니다.',
+      '검색과 필터로 필요한 건을 빠르게 관리합니다.'
     ],
     useCases: [
-      '팀별 영업현황을 정리해야 할 때',
-      '접수/멤버십 고객을 따로 관리해야 할 때',
-      '컨택 담당자와 진행 상태를 추적해야 할 때',
-      '월별 목표와 실적 흐름을 확인해야 할 때'
+      '팀별 영업 흐름을 정리할 때',
+      '접수 현황과 멤버십 내역을 함께 관리할 때',
+      '매니저별 진행 상태를 확인할 때',
+      '목표월 기준 실적 점검이 필요할 때'
     ],
-    note: '영업관리시스템은 현장 관리용 데이터가 누락되지 않는 것이 중요합니다. 업데이트 전 기존 데이터 백업을 권장합니다.'
+    note: '접수내역과 멤버십 내역은 누락 없이 입력되는 것이 중요합니다. 변경 전 백업과 목표월 기준 확인을 함께 권장합니다.',
+    gallery: [
+      {
+        title: '운영 대시보드',
+        caption: '영업현황, 목표월, 팀 운영 핵심 수치를 한 눈에 보는 메인 관리 화면',
+        type: 'dashboard',
+        stats: [['영업현황', '34'], ['접수건수', '18'], ['멤버십', '12'], ['진행중', '9']],
+        tabs: ['영업현황', '접수내역', '멤버십내역', '목표관리']
+      },
+      {
+        title: '접수/멤버십 관리 화면',
+        caption: '필터, 검색, 상태관리 중심의 운영 테이블 예시',
+        type: 'table',
+        filterChips: ['상태', '매니저', '컨택자', '전체검색'],
+        columns: ['고객명', '상태', '매니저', '컨택자'],
+        rows: [['김OO', '접수완료', '김재곤', '건일'], ['박OO', '진행중', '박은영', '건일'], ['이OO', '멤버십', '김예금', '건일']]
+      }
+    ],
+    menus: [
+      { title: '영업현황', desc: '팀 전체 영업 진행 상태와 목표월 흐름을 보는 기본 화면입니다. 운영 상황을 빠르게 파악할 수 있습니다.', points: ['월별 실적 흐름 확인', '목표 관리 기초 화면'] },
+      { title: '접수내역', desc: '신규 접수 건을 상태별로 관리하는 메뉴입니다. 진행단계와 담당 매니저를 함께 확인할 수 있습니다.', points: ['접수 상태 추적', '담당자별 관리'] },
+      { title: '멤버십내역', desc: '멤버십 고객을 별도로 관리하는 영역입니다. 상태, 매니저, 컨택자 기준으로 빠르게 필터링할 수 있습니다.', points: ['멤버십 고객 분리관리', '필터/검색 지원'] },
+      { title: '검색/필터', desc: '상태, 매니저, 컨택자를 바로 필터링하고 전체 검색으로 필요한 건을 즉시 찾는 실무용 기능입니다.', points: ['운영 속도 향상', '실시간 점검 편의'] }
+    ]
   },
   quote: {
     category: 'ESTIMATE SYSTEM CATALOG',
@@ -172,27 +224,14 @@ const MANUAL_DATA = {
     summary: '제품 선택, 가격 정보, 대표 이미지, 견적서 출력 흐름을 자동화하여 고객 안내와 견적 작성 시간을 줄이는 시스템입니다.',
     version: 'V1.00',
     mode: 'Developing',
-    actionText: '개발중',
     actionKey: 'quote',
-    features: [
-      '제품별 견적 항목 구성',
-      '제품 이미지와 가격 정보 연동',
-      '견적서 출력 또는 공유용 자료 생성 지원',
-      '수당계산기와 제품 데이터 연계 가능'
-    ],
-    steps: [
-      '견적 대상 제품을 선택합니다.',
-      '약정, 관리 방식, 가격 조건을 확인합니다.',
-      '대표 이미지와 안내 문구를 검토합니다.',
-      '고객 안내용 견적 자료로 활용합니다.'
-    ],
-    useCases: [
-      '고객에게 제품별 조건을 빠르게 설명해야 할 때',
-      '견적서를 반복 작성해야 할 때',
-      '제품 이미지와 가격 정보를 함께 보여줘야 할 때',
-      '현장 상담 후 안내자료가 필요할 때'
-    ],
-    note: '현재 개발중인 시스템입니다. 정식 ZIP 파일이 최신 릴리즈에 업로드되면 홈페이지 버튼이 자동으로 다운로드로 전환됩니다.'
+    theme: 'cyan',
+    features: ['제품별 견적 항목 구성', '제품 이미지와 가격 정보 연동', '견적서 출력 또는 공유용 자료 생성 지원', '수당계산기와 제품 데이터 연계 가능'],
+    steps: ['견적 대상 제품을 선택합니다.', '약정, 관리 방식, 가격 조건을 확인합니다.', '대표 이미지와 안내 문구를 검토합니다.', '고객 안내용 견적 자료로 활용합니다.'],
+    useCases: ['고객에게 제품별 조건을 빠르게 설명해야 할 때', '견적서를 반복 작성해야 할 때', '제품 이미지와 가격 정보를 함께 보여줘야 할 때', '현장 상담 후 안내자료가 필요할 때'],
+    note: '현재 개발중인 시스템입니다. 정식 ZIP 파일이 최신 릴리즈에 업로드되면 홈페이지 버튼이 자동으로 다운로드로 전환됩니다.',
+    gallery: [],
+    menus: []
   },
   mobile: {
     category: 'MOBILE CUSTOMER CATALOG',
@@ -200,55 +239,49 @@ const MANUAL_DATA = {
     summary: '모바일 환경에서 고객정보, 방문 위치, 연락 흐름을 빠르게 확인해 현장 응대 효율을 높이는 고객관리 지원 시스템입니다.',
     version: 'V1.00',
     mode: 'Developing',
-    actionText: '개발중',
     actionKey: 'mobile',
-    features: [
-      '모바일 화면에 맞춘 고객정보 확인',
-      '방문 위치와 고객 상태 확인',
-      '현장 응대에 필요한 핵심 정보 표시',
-      '고객 방문지도 기능과 연계 가능'
-    ],
-    steps: [
-      '모바일에서 시스템 주소 또는 바로가기를 엽니다.',
-      '관리 대상 고객 또는 방문 대상 고객을 확인합니다.',
-      '위치와 고객 정보를 기준으로 방문 준비를 합니다.',
-      '현장에서 필요한 응대 정보를 빠르게 확인합니다.'
-    ],
-    useCases: [
-      'PC 없이 현장에서 고객 정보를 확인해야 할 때',
-      '방문 전 고객 위치와 기본 정보를 빠르게 봐야 할 때',
-      '고객 응대 흐름을 모바일에서 이어가야 할 때',
-      '방문관리와 지도 기능을 함께 쓰고 싶을 때'
-    ],
-    note: '현재 개발중인 시스템입니다. 모바일 보안 정책과 구글시트/지도 연동 구조를 함께 점검하면서 확장하는 것이 좋습니다.'
+    theme: 'purple',
+    features: ['모바일 화면에 맞춘 고객정보 확인', '방문 위치와 고객 상태 확인', '현장 응대에 필요한 핵심 정보 표시', '고객 방문지도 기능과 연계 가능'],
+    steps: ['모바일에서 시스템 주소 또는 바로가기를 엽니다.', '관리 대상 고객 또는 방문 대상 고객을 확인합니다.', '위치와 고객 정보를 기준으로 방문 준비를 합니다.', '현장에서 필요한 응대 정보를 빠르게 확인합니다.'],
+    useCases: ['PC 없이 현장에서 고객 정보를 확인해야 할 때', '방문 전 고객 위치와 기본 정보를 빠르게 봐야 할 때', '고객 응대 흐름을 모바일에서 이어가야 할 때', '방문관리와 지도 기능을 함께 쓰고 싶을 때'],
+    note: '현재 개발중인 시스템입니다. 모바일 보안 정책과 구글시트/지도 연동 구조를 함께 점검하면서 확장하는 것이 좋습니다.',
+    gallery: [],
+    menus: []
   },
   calculator: {
-    category: 'WEB CALCULATOR CATALOG',
+    category: 'WEB CALCULATOR MANUAL',
     title: '제품가격수당계산시스템',
     summary: '제품군, 모델, 약정, 관리방식에 따른 가격과 수당 정보를 웹에서 바로 확인할 수 있는 현장 영업용 계산 시스템입니다.',
     version: 'V78',
     mode: 'Web App',
-    actionText: '웹으로 열기',
     actionKey: 'calculator',
-    features: [
-      '제품별 가격 조건 빠른 확인',
-      '약정·관리 방식에 따른 수당 계산',
-      '모바일/PC에서 웹으로 바로 실행',
-      '현장 상담용 제품 조건 확인 지원'
+    theme: 'green',
+    features: ['제품별 가격 조건 빠른 확인', '약정·관리 방식에 따른 수당 계산', '모바일/PC에서 웹으로 바로 실행', '현장 상담용 제품 조건 확인 지원'],
+    steps: ['웹으로 열기 버튼으로 계산기를 실행합니다.', '제품군과 모델을 선택합니다.', '약정 및 관리 조건을 확인합니다.', '가격과 수당 결과를 현장 상담에 활용합니다.'],
+    useCases: ['고객 상담 중 가격을 빠르게 확인해야 할 때', '제품별 수당 조건을 바로 비교해야 할 때', '모바일에서 별도 설치 없이 계산해야 할 때', '현장 영업용 계산기를 공유해야 할 때'],
+    note: '이 시스템은 ZIP 다운로드가 아니라 웹앱 실행 방식입니다. 최신 링크는 홈페이지 버튼에 직접 연결되어 있습니다.',
+    gallery: [
+      {
+        title: '메인 계산 화면',
+        caption: '제품군 선택부터 모델 확인까지 빠르게 이동할 수 있는 메인 화면 예시',
+        type: 'calculator-main',
+        titleBar: '쿠쿠렌탈 제품가격 수당계산기 V78',
+        menuPills: ['정수기', '비데', '공기청정기', '안마의자'],
+        cards: ['제품 리스트', '옵션 보기', '제품 확대']
+      },
+      {
+        title: '상세 계산 화면',
+        caption: '선택한 제품의 옵션과 가격·수당을 동시에 확인하는 상세 화면 예시',
+        type: 'calculator-detail',
+        fields: [['모델명', 'CP-XXXX'], ['약정', '36M / 60M'], ['관리방식', '4C / 12C'], ['월 렌탈료', '12,900원'], ['예상 수당', '상담용 즉시 확인']]
+      }
     ],
-    steps: [
-      '홈페이지에서 웹으로 열기 버튼을 클릭합니다.',
-      '제품군과 모델을 선택합니다.',
-      '약정 및 관리 조건을 확인합니다.',
-      '가격과 수당 결과를 현장 상담에 활용합니다.'
-    ],
-    useCases: [
-      '고객 상담 중 가격을 빠르게 확인해야 할 때',
-      '제품별 수당 조건을 바로 비교해야 할 때',
-      '모바일에서 별도 설치 없이 계산해야 할 때',
-      '현장 영업용 계산기를 공유해야 할 때'
-    ],
-    note: '이 시스템은 ZIP 다운로드가 아니라 웹앱 실행 방식입니다. 최신 링크는 홈페이지 버튼에 직접 연결되어 있습니다.'
+    menus: [
+      { title: '제품리스트', desc: '정수기, 비데, 공기청정기 등 제품군별로 목록을 빠르게 탐색하는 기본 화면입니다.', points: ['제품군별 빠른 이동', '모델 확인 중심'] },
+      { title: '옵션 보기', desc: '선택한 제품의 약정, 관리방식, 가격 조건을 자세히 확인하는 메뉴입니다.', points: ['약정 조건 확인', '세부 옵션 비교'] },
+      { title: '수당 계산', desc: '제품별 가격과 조건에 따라 예상 수당 정보를 함께 보여주는 핵심 기능입니다.', points: ['가격·수당 동시 확인', '현장 상담 속도 향상'] },
+      { title: '제품 확대', desc: '제품 이미지를 크게 확인해 고객 상담 중 시각적으로 보여주기 쉬운 보조 기능입니다.', points: ['이미지 확대 확인', '모바일 상담 편의'] }
+    ]
   }
 };
 
@@ -265,14 +298,104 @@ function getProgramAction(key) {
   return { href: '#', text: '개발중', disabled: true };
 }
 
-function fillList(id, items, ordered = false) {
+function fillList(id, items) {
   const el = document.getElementById(id);
   if (!el) return;
   el.innerHTML = '';
-  items.forEach((item) => {
+  (items || []).forEach((item) => {
     const li = document.createElement('li');
     li.textContent = item;
     el.appendChild(li);
+  });
+}
+
+function renderGallery(items) {
+  const wrap = document.getElementById('manualGallery');
+  if (!wrap) return;
+  wrap.innerHTML = '';
+  if (!items || !items.length) {
+    wrap.innerHTML = '<div class="empty-manual">상세 화면 매뉴얼은 현재 준비 중입니다.</div>';
+    return;
+  }
+
+  items.forEach((item) => {
+    const card = document.createElement('article');
+    card.className = 'showcase-card';
+    const visual = document.createElement('div');
+    visual.className = `showcase-visual ${item.type || ''}`;
+
+    if (item.type === 'workspace') {
+      visual.innerHTML = `
+        <div class="mock-window">
+          <div class="window-bar"><span></span><span></span><span></span><strong>${item.header || ''}</strong></div>
+          <div class="mock-content">
+            <div>
+              <div class="chip-group">${(item.badges || []).map(v => `<span>${v}</span>`).join('')}</div>
+              <div class="field-list">${(item.fields || []).map(v => `<div><b>${v[0]}</b><span>${v[1]}</span></div>`).join('')}</div>
+            </div>
+            <div class="mock-side"><h5>${item.sideTitle || ''}</h5>${(item.sideItems || []).map(v => `<p>${v}</p>`).join('')}</div>
+          </div>
+        </div>`;
+    } else if (item.type === 'sheet') {
+      visual.innerHTML = `
+        <div class="mock-sheet">
+          <div class="sheet-head">${(item.columns || []).map(v => `<span>${v}</span>`).join('')}</div>
+          ${(item.rows || []).map(r => `<div class="sheet-row"><span>${r[0]}</span><span>${r[1]}</span></div>`).join('')}
+        </div>`;
+    } else if (item.type === 'dashboard') {
+      visual.innerHTML = `
+        <div class="mock-dashboard">
+          <div class="tab-row">${(item.tabs || []).map(v => `<span>${v}</span>`).join('')}</div>
+          <div class="stat-grid">${(item.stats || []).map(v => `<div><small>${v[0]}</small><strong>${v[1]}</strong></div>`).join('')}</div>
+        </div>`;
+    } else if (item.type === 'table') {
+      visual.innerHTML = `
+        <div class="mock-table">
+          <div class="chip-group">${(item.filterChips || []).map(v => `<span>${v}</span>`).join('')}</div>
+          <div class="sheet-head cols-4">${(item.columns || []).map(v => `<span>${v}</span>`).join('')}</div>
+          ${(item.rows || []).map(r => `<div class="table-row cols-4">${r.map(v => `<span>${v}</span>`).join('')}</div>`).join('')}
+        </div>`;
+    } else if (item.type === 'calculator-main') {
+      visual.innerHTML = `
+        <div class="calc-screen">
+          <div class="calc-title">${item.titleBar || ''}</div>
+          <div class="chip-group">${(item.menuPills || []).map(v => `<span>${v}</span>`).join('')}</div>
+          <div class="calc-cards">${(item.cards || []).map(v => `<div>${v}</div>`).join('')}</div>
+        </div>`;
+    } else if (item.type === 'calculator-detail') {
+      visual.innerHTML = `
+        <div class="calc-detail">
+          ${(item.fields || []).map(v => `<div><b>${v[0]}</b><span>${v[1]}</span></div>`).join('')}
+        </div>`;
+    }
+
+    const meta = document.createElement('div');
+    meta.className = 'showcase-meta';
+    meta.innerHTML = `<h4>${item.title || ''}</h4><p>${item.caption || ''}</p>`;
+
+    card.appendChild(visual);
+    card.appendChild(meta);
+    wrap.appendChild(card);
+  });
+}
+
+function renderMenus(items) {
+  const wrap = document.getElementById('manualMenus');
+  if (!wrap) return;
+  wrap.innerHTML = '';
+  if (!items || !items.length) {
+    wrap.innerHTML = '<div class="empty-manual">상세 메뉴 설명은 현재 준비 중입니다.</div>';
+    return;
+  }
+  items.forEach((item) => {
+    const article = document.createElement('article');
+    article.className = 'menu-card';
+    article.innerHTML = `
+      <div class="menu-card-head"><h4>${item.title}</h4></div>
+      <p>${item.desc}</p>
+      <ul>${(item.points || []).map(v => `<li>${v}</li>`).join('')}</ul>
+    `;
+    wrap.appendChild(article);
   });
 }
 
@@ -288,9 +411,11 @@ function openManual(key) {
   document.getElementById('manualVersion').textContent = data.version;
   document.getElementById('manualMode').textContent = data.mode;
   fillList('manualFeatures', data.features);
-  fillList('manualSteps', data.steps, true);
+  fillList('manualSteps', data.steps);
   fillList('manualUseCases', data.useCases);
   document.getElementById('manualNote').textContent = data.note;
+  renderGallery(data.gallery);
+  renderMenus(data.menus);
 
   const action = getProgramAction(data.actionKey);
   const actionEl = document.getElementById('manualAction');
@@ -339,3 +464,8 @@ function initManualCards() {
     if (event.key === 'Escape') closeManual();
   });
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+  loadReleases();
+  initManualCards();
+});
