@@ -32,6 +32,29 @@ function connectPrograms(release) {
   Object.entries(programs).forEach(([key, program]) => {
     const row = document.querySelector(`.download-row[data-program="${key}"]`);
     const link = document.getElementById(program.linkId);
+
+    // 웹으로 사용하는 시스템은 GitHub Releases를 거치지 않고 지정된 웹앱 주소로 바로 연결합니다.
+    if (program.type === 'web') {
+      const dateText = formatDate(program.updatedAt || '');
+      setProgramVersion(key, program.version);
+      setProgramDate(key, dateText);
+
+      if (link) {
+        link.href = program.webUrl;
+        link.textContent = '웹으로 열기';
+        link.setAttribute('target', '_blank');
+        link.setAttribute('rel', 'noopener');
+        link.removeAttribute('aria-disabled');
+        link.removeAttribute('tabindex');
+      }
+
+      if (row) {
+        row.classList.add('ready');
+        row.classList.remove('pending');
+      }
+      return;
+    }
+
     const asset = assets.find(item => item.name === program.fileName);
     const href = asset?.browser_download_url || makeLatestDownloadUrl(config, program.fileName);
     const dateText = formatDate(asset?.updated_at || asset?.created_at || program.updatedAt || release?.published_at || release?.created_at || '');

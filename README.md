@@ -8,16 +8,17 @@
 - 영업관리시스템: `Sales_Manager.zip`
 - 견적자동화시스템: `Quote_Automation.zip`
 - 고객관리모바일시스템: `Customer_Mobile_System.zip`
-- 제품가격수당계산시스템: `Price_Commission_Calculator.zip`
+- 제품가격수당계산시스템: 웹앱 바로가기 / V78
 
 ## 운영 방식
 
 - 홈페이지는 GitHub Pages에서 운영합니다.
-- 다운로드 파일은 GitHub Releases 최신 릴리즈의 Assets에서 연결합니다.
+- ZIP 프로그램은 GitHub Releases 최신 릴리즈의 Assets에서 연결합니다.
+- 웹 시스템은 지정된 Apps Script 웹앱 주소로 연결합니다.
 - 각 프로그램의 표시 버전은 `assets/site-config.js`에서 개별 관리합니다.
 - 각 프로그램의 업데이트일은 릴리즈 자산의 업로드 날짜가 있으면 자동 표시하고, 없으면 설정값을 표시합니다.
 
 
 ## 개발중 버튼 처리
 
-최신 릴리즈 Assets에 해당 ZIP 파일이 없으면 홈페이지에서는 GitHub Releases 페이지로 이동하지 않고 `개발중`으로 표시됩니다. 파일이 업로드되면 자동으로 `다운로드` 버튼으로 전환됩니다.
+최신 릴리즈 Assets에 해당 ZIP 파일이 없으면 홈페이지에서는 GitHub Releases 페이지로 이동하지 않고 `개발중`으로 표시됩니다. 파일이 업로드되면 자동으로 `다운로드` 버튼으로 전환됩니다. 웹 시스템은 `웹으로 열기` 버튼으로 바로 연결됩니다.

@@ -1,5 +1,5 @@
 // 쿠쿠 자동화 시스템 홈페이지 설정 파일
-// 각 시스템의 버전은 여기에서 개별 관리하고, 다운로드 파일은 GitHub Releases 최신 릴리즈에서 연결됩니다.
+// 각 시스템의 버전은 여기에서 개별 관리하고, ZIP 프로그램은 GitHub Releases 최신 릴리즈에서 연결하고, 웹 시스템은 지정된 웹앱 주소로 연결합니다.
 window.SITE_CONFIG = {
   githubOwner: "kiuja78",
   githubRepo: "cuckoo-work-system",
@@ -36,9 +36,10 @@ window.SITE_CONFIG = {
     },
     calculator: {
       title: "제품가격수당계산시스템",
-      version: "V77",
-      updatedAt: "2026-05-08",
-      fileName: "Price_Commission_Calculator.zip",
+      version: "V78",
+      updatedAt: "2026-05-30",
+      type: "web",
+      webUrl: "https://script.google.com/macros/s/AKfycbyxEK95YexqaeA0oU1aZy4wWZ3sOwaIJw908VAVxJfr8cV0yCD_9RrQ8dk9_roK8ivd/exec",
       linkId: "link-calculator"
     }
   }

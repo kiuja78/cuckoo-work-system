@@ -20,8 +20,9 @@
       "fileName": "Customer_Mobile_System.zip"
     },
     "제품가격수당계산시스템": {
-      "version": "V77",
-      "fileName": "Price_Commission_Calculator.zip"
+      "version": "V78",
+      "type": "web",
+      "url": "https://script.google.com/macros/s/AKfycbyxEK95YexqaeA0oU1aZy4wWZ3sOwaIJw908VAVxJfr8cV0yCD_9RrQ8dk9_roK8ivd/exec"
     }
   }
 }

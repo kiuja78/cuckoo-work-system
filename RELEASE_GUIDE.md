@@ -12,7 +12,10 @@
 - `Sales_Manager.zip`
 - `Quote_Automation.zip`
 - `Customer_Mobile_System.zip`
-- `Price_Commission_Calculator.zip`
+
+## 웹앱 시스템
+
+제품가격수당계산시스템은 ZIP 파일 업로드 대상이 아니라 Apps Script 웹앱 링크로 연결합니다.
 
 ## 버전 표시 수정
 
