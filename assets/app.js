@@ -40,8 +40,21 @@ function connectPrograms(release) {
     setProgramDate(key, dateText);
 
     if (link) {
-      link.href = asset ? href : (config.latestReleaseUrl || href);
-      link.textContent = asset ? '다운로드' : '릴리즈 확인';
+      if (asset) {
+        link.href = href;
+        link.textContent = '다운로드';
+        link.setAttribute('target', '_blank');
+        link.setAttribute('rel', 'noopener');
+        link.removeAttribute('aria-disabled');
+        link.removeAttribute('tabindex');
+      } else {
+        link.href = 'javascript:void(0)';
+        link.textContent = '개발중';
+        link.removeAttribute('target');
+        link.removeAttribute('rel');
+        link.setAttribute('aria-disabled', 'true');
+        link.setAttribute('tabindex', '-1');
+      }
     }
 
     if (row) {
