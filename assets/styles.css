@@ -309,3 +309,166 @@ h3 { font-size: 21px; letter-spacing: -0.04em; margin-bottom: 10px; }
   .card-sub.one { top: auto; bottom: 140px; right: 28px; }
   .card-sub.two { left: 28px; bottom: 32px; }
 }
+
+/* Program manual modal */
+.manual-trigger {
+  cursor: pointer;
+  transition: transform .22s ease, box-shadow .22s ease, border-color .22s ease;
+  position: relative;
+}
+.manual-trigger:hover,
+.manual-trigger:focus-visible {
+  transform: translateY(-6px);
+  border-color: rgba(44, 105, 246, 0.35);
+  box-shadow: 0 26px 70px rgba(15, 23, 42, 0.14);
+  outline: none;
+}
+.manual-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 18px;
+  min-height: 42px;
+  border-radius: 14px;
+  border: 1px solid #d5e1f2;
+  background: #f6f9fd;
+  color: #204b86;
+  font-size: 14px;
+  font-weight: 900;
+}
+.manual-cta::after {
+  content: "→";
+  margin-left: 8px;
+}
+.manual-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+.manual-modal.open { display: flex; }
+.manual-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(5, 12, 24, 0.62);
+  backdrop-filter: blur(14px);
+}
+.manual-dialog {
+  position: relative;
+  z-index: 1;
+  width: min(1040px, 100%);
+  max-height: min(88vh, 920px);
+  overflow: auto;
+  border-radius: 34px;
+  background: #ffffff;
+  border: 1px solid rgba(255,255,255,0.72);
+  box-shadow: 0 40px 120px rgba(0,0,0,0.28);
+}
+.manual-close {
+  position: sticky;
+  top: 18px;
+  float: right;
+  margin: 18px 18px 0 0;
+  width: 44px;
+  height: 44px;
+  border: 0;
+  border-radius: 16px;
+  background: rgba(255,255,255,0.88);
+  color: #10203d;
+  font-size: 30px;
+  line-height: 1;
+  cursor: pointer;
+  z-index: 3;
+  box-shadow: 0 12px 26px rgba(15,23,42,0.14);
+}
+.manual-hero {
+  min-height: 260px;
+  padding: 42px 44px;
+  display: grid;
+  grid-template-columns: 1fr 220px;
+  align-items: end;
+  gap: 28px;
+  color: white;
+  background:
+    radial-gradient(circle at 88% 18%, rgba(255,255,255,0.24), transparent 18%),
+    radial-gradient(circle at 14% 18%, rgba(85,142,255,0.42), transparent 22%),
+    linear-gradient(135deg, #081224, #14346a 56%, #2d73ff);
+  border-radius: 34px 34px 0 0;
+  overflow: hidden;
+}
+.manual-label {
+  margin: 0 0 12px;
+  color: #bcd3ff;
+  font-weight: 900;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  font-size: 13px;
+}
+.manual-hero h2 {
+  color: white;
+  font-size: clamp(34px, 5vw, 58px);
+  margin-bottom: 14px;
+}
+.manual-hero p { color: #d9e6fb; max-width: 690px; margin-bottom: 0; }
+.manual-version-box {
+  border-radius: 26px;
+  padding: 22px;
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.18);
+  backdrop-filter: blur(12px);
+}
+.manual-version-box span,
+.manual-version-box small { display: block; color: #c6d8f4; font-size: 13px; font-weight: 800; }
+.manual-version-box strong { display: block; font-size: 38px; letter-spacing: -0.06em; margin: 8px 0; }
+.manual-body {
+  padding: 26px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  background: linear-gradient(180deg, #ffffff, #f6f9fd);
+}
+.manual-panel {
+  background: white;
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  padding: 24px;
+  box-shadow: 0 14px 34px rgba(15,23,42,0.05);
+}
+.manual-panel h3 { margin-bottom: 14px; }
+.manual-panel ul,
+.manual-panel ol { margin: 0; padding-left: 20px; color: #4e6179; }
+.manual-panel li { margin: 8px 0; }
+.feature-panel {
+  grid-row: span 2;
+  background: linear-gradient(180deg, #ffffff, #eef5ff);
+}
+.manual-note-panel p { margin-bottom: 0; color: var(--muted); }
+.manual-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding: 0 26px 28px;
+  background: #f6f9fd;
+  border-radius: 0 0 34px 34px;
+}
+body.manual-open { overflow: hidden; }
+
+@media (max-width: 760px) {
+  .manual-modal { padding: 14px; }
+  .manual-hero { grid-template-columns: 1fr; padding: 34px 24px; }
+  .manual-body { grid-template-columns: 1fr; padding: 18px; }
+  .feature-panel { grid-row: auto; }
+  .manual-footer { flex-direction: column; padding: 0 18px 22px; }
+  .manual-footer .btn { width: 100%; }
+}
+.btn.disabled,
+.btn[aria-disabled="true"] {
+  pointer-events: none;
+  opacity: 0.62;
+  background: #dfe7f2 !important;
+  color: #64748b !important;
+  box-shadow: none !important;
+}
