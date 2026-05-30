@@ -8,7 +8,7 @@ window.SITE_CONFIG = {
   programs: {
     cuckoo: {
       title: "업무자동화시스템",
-      version: "V10.110",
+      version: "V10.100",
       updatedAt: "2026-05-16",
       fileName: "CUCKOO_Automation.zip",
       linkId: "link-cuckoo"

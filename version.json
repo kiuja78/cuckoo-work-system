@@ -4,7 +4,7 @@
   "structure": "integrated system hub",
   "programs": {
     "업무자동화시스템": {
-      "version": "V10.110",
+      "version": "V10.100",
       "fileName": "CUCKOO_Automation.zip"
     },
     "영업관리시스템": {
