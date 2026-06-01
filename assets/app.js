@@ -25,10 +25,65 @@ function setProgramDate(programKey, dateText) {
   if (el) el.textContent = dateText || '-';
 }
 
+
+const RELEASE_VERSION_ALIASES = {
+  cuckoo: ['쿠쿠업무자동화시스템', '쿠쿠 업무자동화시스템', '업무자동화시스템', '업무 자동화 시스템', 'CUCKOO Automation', 'CUCKOO_Automation'],
+  sales: ['지국영업관리시스템', '지국 영업관리시스템', '영업관리시스템', '영업 관리 시스템', 'Sales Manager', 'Sales_Manager'],
+  quote: ['견적자동화시스템', '견적 자동화 시스템', 'Estimate System', 'Quote_Automation'],
+  mobile: ['고객관리모바일시스템', '고객관리 모바일 시스템', 'Customer_Mobile_System', 'Customer Care'],
+  calculator: ['제품가격수당계산시스템', '제품가격 수당계산 시스템', '제품가격수당계산기', '제품가격 수당계산기', 'Price & Commission']
+};
+
+let RELEASE_VERSION_CACHE = {};
+
+function normalizeReleaseText(text) {
+  return String(text || '')
+    .replace(/\r?\n/g, ' ')
+    .replace(/[_-]+/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function escapeRegExp(text) {
+  return String(text).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+function extractProgramVersions(release) {
+  const source = normalizeReleaseText([
+    release?.name,
+    release?.tag_name,
+    release?.body
+  ].filter(Boolean).join(' / '));
+
+  const result = {};
+  Object.entries(RELEASE_VERSION_ALIASES).forEach(([key, aliases]) => {
+    for (const alias of aliases) {
+      const compactAlias = alias.replace(/\s+/g, '\\s*');
+      const patterns = [
+        new RegExp(`${compactAlias}[^Vv0-9]{0,30}[Vv]?\\s*(\\d+(?:\\.\\d+)+)`, 'i'),
+        new RegExp(`${compactAlias}[^Vv0-9]{0,30}[Vv]?\\s*(\\d+)`, 'i')
+      ];
+      for (const pattern of patterns) {
+        const match = source.match(pattern);
+        if (match && match[1]) {
+          result[key] = `V${match[1]}`;
+          return;
+        }
+      }
+    }
+  });
+  return result;
+}
+
+function getDisplayVersion(key, program) {
+  return RELEASE_VERSION_CACHE[key] || program.version;
+}
+
 function connectPrograms(release) {
   const config = window.SITE_CONFIG || {};
   const programs = config.programs || {};
   const assets = Array.isArray(release?.assets) ? release.assets : [];
+  RELEASE_VERSION_CACHE = extractProgramVersions(release);
 
   Object.entries(programs).forEach(([key, program]) => {
     const row = document.querySelector(`.download-row[data-program="${key}"]`);
@@ -36,7 +91,7 @@ function connectPrograms(release) {
 
     if (program.type === 'web') {
       const dateText = formatDate(program.updatedAt || '');
-      setProgramVersion(key, program.version);
+      setProgramVersion(key, getDisplayVersion(key, program));
       setProgramDate(key, dateText);
 
       if (link) {
@@ -60,7 +115,7 @@ function connectPrograms(release) {
     const href = asset?.browser_download_url || makeLatestDownloadUrl(config, program.fileName);
     const dateText = formatDate(asset?.updated_at || asset?.created_at || program.updatedAt || release?.published_at || release?.created_at || '');
 
-    setProgramVersion(key, program.version);
+    setProgramVersion(key, getDisplayVersion(key, program));
     setProgramDate(key, dateText);
 
     if (link) {
@@ -354,7 +409,7 @@ function openManual(key) {
   document.getElementById('manualCategory').textContent = data.category;
   document.getElementById('manualTitle').textContent = data.title;
   document.getElementById('manualSummary').textContent = data.summary;
-  document.getElementById('manualVersion').textContent = data.version;
+  document.getElementById('manualVersion').textContent = RELEASE_VERSION_CACHE[key] || data.version;
   document.getElementById('manualMode').textContent = data.mode;
   fillList('manualFeatures', data.features);
   fillList('manualSteps', data.steps);

@@ -8,7 +8,7 @@ window.SITE_CONFIG = {
   programs: {
     cuckoo: {
       title: "업무자동화시스템",
-      version: "V10.100",
+      version: "V10.110",
       updatedAt: "2026-05-16",
       fileName: "CUCKOO_Automation.zip",
       linkId: "link-cuckoo",
@@ -16,7 +16,7 @@ window.SITE_CONFIG = {
     },
     sales: {
       title: "영업관리시스템",
-      version: "V7.40",
+      version: "V7.10",
       updatedAt: "2026-05-29",
       fileName: "Sales_Manager.zip",
       linkId: "link-sales",
