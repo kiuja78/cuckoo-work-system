@@ -1,14 +1,15 @@
 {
   "site_name": "쿠쿠 자동화 시스템",
-  "site_version": "v3.0.0",
+  "site_version": "v3.0.1",
   "structure": "integrated system hub",
+  "updated_at": "2026-06-10",
   "programs": {
     "업무자동화시스템": {
-      "version": "V10.110",
+      "version": "V12.70",
       "fileName": "CUCKOO_Automation.zip"
     },
     "영업관리시스템": {
-      "version": "V7.10",
+      "version": "V8.90",
       "fileName": "Sales_Manager.zip"
     },
     "견적자동화시스템": {
@@ -20,9 +21,9 @@
       "fileName": "Customer_Mobile_System.zip"
     },
     "제품가격수당계산시스템": {
-      "version": "V78",
+      "version": "V79",
       "type": "web",
-      "url": "https://script.google.com/macros/s/AKfycbyxEK95YexqaeA0oU1aZy4wWZ3sOwaIJw908VAVxJfr8cV0yCD_9RrQ8dk9_roK8ivd/exec"
+      "url": "https://bit.ly/4uf5cRE"
     }
   }
 }
