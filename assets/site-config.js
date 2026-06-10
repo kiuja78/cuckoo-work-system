@@ -1,5 +1,7 @@
 // 쿠쿠 자동화 시스템 홈페이지 설정 파일
-// 각 시스템의 버전은 여기에서 개별 관리하고, ZIP 프로그램은 GitHub Releases 최신 릴리즈에서 연결하고, 웹 시스템은 지정된 웹앱 주소로 연결합니다.
+// 각 시스템의 버전은 기본값으로 표시하고, ZIP 프로그램 및 웹 시스템 버전은 GitHub Releases 제목/본문의 "시스템명+V버전" 표기를 우선 적용합니다.
+// 제품가격수당계산시스템 웹앱 주소 변경일: 2026-06-10
+
 window.SITE_CONFIG = {
   githubOwner: "kiuja78",
   githubRepo: "cuckoo-work-system",
@@ -8,7 +10,7 @@ window.SITE_CONFIG = {
   programs: {
     cuckoo: {
       title: "업무자동화시스템",
-      version: "V10.110",
+      version: "V12.70",
       updatedAt: "2026-05-16",
       fileName: "CUCKOO_Automation.zip",
       linkId: "link-cuckoo",
@@ -16,8 +18,8 @@ window.SITE_CONFIG = {
     },
     sales: {
       title: "영업관리시스템",
-      version: "V7.10",
-      updatedAt: "2026-05-29",
+      version: "V8.90",
+      updatedAt: "2026-05-16",
       fileName: "Sales_Manager.zip",
       linkId: "link-sales",
       forceDownload: true
@@ -38,10 +40,10 @@ window.SITE_CONFIG = {
     },
     calculator: {
       title: "제품가격수당계산시스템",
-      version: "V78",
-      updatedAt: "2026-05-30",
+      version: "V79",
+      updatedAt: "2026-06-10",
       type: "web",
-      webUrl: "https://script.google.com/macros/s/AKfycbyxEK95YexqaeA0oU1aZy4wWZ3sOwaIJw908VAVxJfr8cV0yCD_9RrQ8dk9_roK8ivd/exec",
+      webUrl: "https://bit.ly/4uf5cRE",
       linkId: "link-calculator"
     }
   }
