@@ -1,8 +1,8 @@
 {
   "site_name": "쿠쿠 자동화 시스템",
-  "site_version": "v3.0.1",
+  "site_version": "v3.0.4",
   "structure": "integrated system hub",
-  "updated_at": "2026-06-10",
+  "updated_at": "2026-06-18",
   "programs": {
     "업무자동화시스템": {
       "version": "V12.70",
@@ -13,8 +13,13 @@
       "fileName": "Sales_Manager.zip"
     },
     "견적자동화시스템": {
-      "version": "V1.00",
-      "fileName": "Quote_Automation.zip"
+      "version": "V9.34",
+      "fileName": "Quote_Automation.zip",
+      "status": "download_enabled",
+      "sourceRepo": "kiuja78/cuckoo-Quote_system",
+      "downloadUrl": "https://github.com/kiuja78/cuckoo-Quote_system/releases/latest/download/Quote_Automation.zip",
+      "sourceType": "github-release",
+      "releaseUrl": "https://github.com/kiuja78/cuckoo-Quote_system/releases/latest"
     },
     "고객관리모바일시스템": {
       "version": "V1.00",
