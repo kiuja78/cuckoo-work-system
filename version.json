@@ -1,6 +1,6 @@
 {
   "site_name": "쿠쿠 자동화 시스템",
-  "site_version": "v3.0.4",
+  "site_version": "v3.0.5",
   "structure": "integrated system hub",
   "updated_at": "2026-06-18",
   "programs": {
@@ -9,8 +9,13 @@
       "fileName": "CUCKOO_Automation.zip"
     },
     "영업관리시스템": {
-      "version": "V8.90",
-      "fileName": "Sales_Manager.zip"
+      "version": "V8.91",
+      "fileName": "Sales_Manager_Setup.exe",
+      "status": "download_enabled",
+      "sourceRepo": "kiuja78/cuckoo-sales-system",
+      "downloadUrl": "https://github.com/kiuja78/cuckoo-sales-system/releases/latest",
+      "sourceType": "github-release",
+      "releaseUrl": "https://github.com/kiuja78/cuckoo-sales-system/releases/latest"
     },
     "견적자동화시스템": {
       "version": "V9.34",
