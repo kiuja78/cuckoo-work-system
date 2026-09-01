@@ -1315,14 +1315,16 @@ function isWaterPurifierCpRecord(record) {
 
 function isWaterPurifierSalesRecord(record) {
   if (!record || record.status === "취소" || !isWaterPurifierCpRecord(record)) return false;
-  // 정수기 KPI는 '판매실적'이므로 멤버십/기타/공란 같은 비영업 행은 제외합니다.
+  // V10.38: 멤버십 정수기(CP-)는 별도 멤버십 실적이므로 정수기 판매 KPI에서 반드시 제외합니다.
+  // 2026-08 백업 검증 결과 CP- 50행 중 멤버십 7행을 제외한 실제 판매 정수기는 43행입니다.
+  if (isMembershipRecord(record)) return false;
   // 인정 판매종류는 영업실적과 동일한 신규·패키지·재렌탈·일시불입니다.
   const category = normalizeCategory(record.category);
-  return ["신규", "패키지", "재렌탈", "일시불"].includes(category);
+  return mainCategories.includes(category);
 }
 
 function waterPurifierCpCount(records) {
-  // V10.37 정수기 공식 집계 기준
+  // V10.38 정수기 공식 집계 기준
   // 1) 목표산정기간의 접수일 기준
   // 2) 상태 '취소' 제외
   // 3) 제품명이 CP-로 시작
@@ -2123,12 +2125,13 @@ function waterPurifierMonthRecords(month = currentDashboardMonth()) {
   return (state.records || []).filter((record) =>
     record &&
     record.status !== "취소" &&
+    !isMembershipRecord(record) &&
     inDateRange(record.receivedDate || "", period.start, period.end)
   );
 }
 
 function waterPurifierEvaluationMetrics(month = currentDashboardMonth()) {
-  // V10.37: 대시보드와 경영평가 모두 동일한 "CP- 영업접수행" 공식 집계 함수를 사용합니다.
+  // V10.38: 대시보드와 경영평가 모두 동일한 "CP- 영업접수행" 공식 집계 함수를 사용합니다.
   // 월별 목표산정기간 내 CP- 제품 중 신규/패키지/재렌탈/일시불 영업접수행만 1행=1건으로 집계합니다.
   const period = monthPeriod(month);
   const sourceRecords = waterPurifierMonthRecords(month);
@@ -2170,7 +2173,7 @@ function renderDashboardCustomCards(records) {
     const chip = valueNode.closest(".custom-condition-chip");
     if (chip) {
       if (active && String(card.title || "").trim() === "정수기") {
-        chip.title = "목표산정기간 · 취소 제외 · CP- 시작 · 신규/패키지/재렌탈/일시불 · 1행=1건";
+        chip.title = "목표산정기간 · 취소/멤버십 제외 · CP- 시작 · 신규/패키지/재렌탈/일시불 · 1행=1건";
       } else {
         chip.removeAttribute("title");
       }
@@ -6013,7 +6016,7 @@ function managementEvaluationPolicyItemMetrics(records, goals, input, item, mont
   const isWaterRateItem = item?.id === "policy-water" || (item.kind === "rate" && String(item.title || "").includes("정수기"));
   const isMattressCareItem = item.id === "policy-mattress" || String(item.title || "").trim() === "매트리스 케어";
 
-  // V10.37: 정수기는 대시보드와 경영평가가 동일한 영업접수행 기준 metric을 그대로 사용합니다.
+  // V10.38: 정수기는 대시보드와 경영평가가 동일한 영업접수행 기준 metric을 그대로 사용합니다.
   if (isWaterRateItem) {
     const water = waterPurifierEvaluationMetrics(month);
     return {
@@ -6145,7 +6148,7 @@ function managementEvaluationMetrics(month = managementEvaluationMonth()) {
     : toNumber(inspectionCompleted) / inspectionDenominator * 100;
   const happyTalkRate = input.happyTalkRate;
 
-  // V10.37: 정수기(CP-) KPI는 대시보드 선택카드와 동일한 공식 영업접수행 기준을 사용합니다.
+  // V10.38: 정수기(CP-) KPI는 대시보드 선택카드와 동일한 공식 영업접수행 기준을 사용합니다.
   // 비영업 행(멤버십/기타/공란)은 정수기 판매실적에 포함하지 않습니다.
   const policyItems = policy.policyItems.map((item) => {
     const isWaterRateItem = item?.id === "policy-water"
@@ -10019,7 +10022,7 @@ function exportFullBackup() {
     backupType: "MJ_Sales_Manager_FullBackup",
     appName: "MJ_Sales_Manager",
     exportedAt: new Date().toISOString(),
-    version: "V10.37",
+    version: "V10.38",
     description: "접수내역, 경영평가 월별 입력값·주력상품 상대평가 예상점수·팀 정책이행 수기건수, 접수일 기준 매니저 귀속, 매니저 고유번호·노출순번·재직상태·팀 이동이력, 월별 목표·수기실적, 운영목표, 실판매자 귀속 및 제품분석 설정을 포함한 전체 데이터 백업",
     data: state
   };
@@ -14456,7 +14459,7 @@ document.addEventListener("click", (event) => {
 
 
 
-const APP_VERSION = "v10.37";
+const APP_VERSION = "v10.38";
 const UPDATE_RELEASES_URL = "https://github.com/kiuja78/cuckoo-work-system/releases";
 const UPDATE_DOWNLOAD_URL = "https://github.com/kiuja78/cuckoo-work-system/releases/download/%EC%97%85%EB%AC%B4%EC%9E%90%EB%8F%99%ED%99%94%EC%8B%9C%EC%8A%A4%ED%85%9C/Sales_Manager.zip";
 const SALES_MANAGER_LATEST_VERSION = "v10";
