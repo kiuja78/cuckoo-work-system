@@ -22,7 +22,7 @@
     <p>체계적인 영업관리, 더 나은 성과의 시작</p>
     <div class="startup-intro-status"><span></span><span id="startupIntroStatus">업무 화면을 구성하고 있습니다</span></div>
     <div class="startup-intro-progress"><i id="startupIntroProgress"></i></div>
-    <div class="startup-intro-footer"><strong>영업관리 시스템</strong><span>V10.65</span></div>
+    <div class="startup-intro-footer"><strong>영업관리 시스템</strong><span>V10.66</span></div>
   </div>
 </div>
 
@@ -31,7 +31,7 @@
       <div class="brand" id="sidebarRefreshBtn" role="button" tabindex="0" title="새로고침">
         <div class="brand-mark brand-program-icon"><img src="./assets/sales_manager_icon.png" alt="영업관리 시스템"></div>
         <div class="brand-text">
-          <strong id="sidebarAppTitle">영업관리 시스템 V10.65</strong>
+          <strong id="sidebarAppTitle">영업관리 시스템 V10.66</strong>
           <em id="sidebarManagerLine">김건일 마스터</em>
         </div>
       </div>
@@ -1460,11 +1460,11 @@
             <div class="version-update-box">
               <div class="version-update-row">
                 <span>현재 버전</span>
-                <strong id="settingsCurrentVersionLabel">V10.65</strong>
+                <strong id="settingsCurrentVersionLabel">V10.66</strong>
               </div>
               <div class="version-update-row">
                 <span>최신 버전</span>
-                <strong id="settingsLatestVersionLabel">V10.65</strong>
+                <strong id="settingsLatestVersionLabel">V10.66</strong>
               </div>
               <div class="form-actions version-update-actions">
                 <button class="ghost-button" id="checkVersionBtn" type="button">버전 확인</button>
@@ -1508,6 +1508,7 @@
               <h2>월 목표지수 등록</h2>
             </div>
             <div class="goal-index-layout">
+              <div class="goal-index-fields">
               <div class="goal-index-row goal-index-row-main">
                 <label class="goal-month-field">목표월<input id="goalMonthInput" type="month"></label>
                 <label>목표시작일<input id="periodStartInput" type="date"></label>
@@ -1527,18 +1528,19 @@
               <div class="goal-index-row goal-index-row-package">
                 <label class="goal-package-field">패키지 목표비율(%)<input id="packageRateInput" type="number" min="0" max="100" step="1"></label>
               </div>
+              </div>
               <div class="goal-team-operation">
                 <div class="goal-team-operation-head">
                   <div>
                     <strong>팀 운영 형태</strong>
-                    <small>지국에서 사용하는 팀 수만 선택하세요. 팀 이름은 별도로 설정하지 않아도 됩니다.</small>
+                    <small>지국에서 사용하는 팀 수만 선택하세요.</small>
                   </div>
                   <div class="goal-team-operation-buttons" role="group" aria-label="팀 운영 형태 선택">
                     <button class="ghost-button small team-operation-btn" id="teamOperationSingleBtn" type="button" data-team-operation="1">1팀 운영</button>
                     <button class="ghost-button small team-operation-btn" id="teamOperationDualBtn" type="button" data-team-operation="2">2팀 운영</button>
                   </div>
                 </div>
-                <p class="goal-team-operation-help">매니저 등록에서는 실제 사용하는 소속팀을 선택합니다. 본인이 어느 팀인지 따로 설정할 필요가 없습니다.</p>
+                <p class="goal-team-operation-help">팀 이름을 따로 설정할 필요가 없습니다. 매니저 등록에서 소속팀만 선택하세요.</p>
               </div>
             </div>
             <div class="form-actions section-save-row">

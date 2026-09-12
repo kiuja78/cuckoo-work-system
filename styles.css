@@ -23686,3 +23686,36 @@ body[data-view="records"] .record-form-row.row-basic {
   .goal-team-operation-buttons { width:100%; }
   .goal-team-operation-buttons button { flex:1; }
 }
+
+/* V10.66 settings simplification: team operation is part of monthly goals */
+.goal-index-layout {
+  display:grid !important;
+  grid-template-columns:minmax(0, 1fr) minmax(260px, 320px);
+  gap:14px;
+  align-items:stretch;
+}
+.goal-index-fields { min-width:0; display:grid; gap:10px; align-content:start; }
+.goal-team-operation {
+  margin-top:0 !important;
+  height:100%;
+  box-sizing:border-box;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+}
+.goal-team-operation-head { align-items:flex-start; flex-direction:column; gap:10px; }
+.goal-team-operation-buttons { width:100%; }
+.goal-team-operation-buttons button { flex:1; min-height:42px; }
+.goal-team-operation-help { line-height:1.5; }
+.analytics-month-status-wrap { width:100%; }
+.analytics-month-status-grid {
+  display:grid !important;
+  grid-template-columns:repeat(6,minmax(0,1fr));
+  gap:8px;
+  max-height:none;
+}
+.analytics-month-tile { min-width:0; }
+@media (max-width:900px) {
+  .goal-index-layout { grid-template-columns:1fr; }
+  .goal-team-operation { height:auto; }
+}
