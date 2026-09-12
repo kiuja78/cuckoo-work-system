@@ -469,6 +469,7 @@ const sampleState = {
   },
   menuVisibility: normalizeMenuVisibility(),
   teamNames: ["원팀"],
+  appMeta: { teamOperationMode: "1" },
   managers: [
     { id: "m1", name: "김재곤", team: "B팀", goal: 31 },
     { id: "m2", name: "박은영", team: "B팀", goal: 31 },
@@ -554,6 +555,7 @@ let state = loadState();
 let currentView = "dashboard";
 let managerPerformanceMode = "assigned";
 let selectedRecordId = "";
+const selectedRecordIds = new Set();
 let recordSequenceSort = "desc";
 let promoListFilter = "all";
 let calendarDragStart = "";
@@ -1707,12 +1709,14 @@ function defaultTeamName() {
 
 function normalizeTeamHistoryForNames(history, fallbackTeam, joinedMonth, teamNames = configuredTeamNames()) {
   const names = teamNames.length ? teamNames : ["원팀"];
-  const fallback = names.includes(normalizeTeamName(fallbackTeam)) ? normalizeTeamName(fallbackTeam) : names[0];
+  const explicitFallback = normalizeTeamName(fallbackTeam);
+  const fallback = explicitFallback || names[0];
   const source = Array.isArray(history) ? history : [];
   const normalized = source.map((item) => {
     const team = normalizeTeamName(item?.team);
     return {
-      team: names.includes(team) ? team : fallback,
+      // 저장된 소속팀을 현재 팀 목록의 첫 팀으로 강제 치환하지 않습니다.
+      team: team || fallback,
       startMonth: normalizeManagerMonth(item?.startMonth),
       endMonth: normalizeManagerMonth(item?.endMonth)
     };
@@ -1729,7 +1733,8 @@ function normalizeManagerTeamHistory(history, fallbackTeam = defaultTeamName(), 
 
 function normalizeManager(manager = {}) {
   const names = configuredTeamNames();
-  const fallbackTeam = names.includes(normalizeTeamName(manager.team)) ? normalizeTeamName(manager.team) : names[0];
+  const explicitTeam = normalizeTeamName(manager.team);
+  const fallbackTeam = explicitTeam || names[0] || "원팀";
   const joinedMonth = normalizeManagerMonth(manager.joinedMonth || manager.startMonth);
   const inactiveMonth = normalizeManagerMonth(manager.inactiveMonth || manager.endMonth);
   const status = manager.status === "inactive" || manager.active === false ? "inactive" : "active";
@@ -1738,7 +1743,8 @@ function normalizeManager(manager = {}) {
   return {
     id: manager.id || uid("m"),
     name: String(manager.name || "").trim(),
-    team: latestHistory?.team || fallbackTeam,
+    // 명시적으로 저장된 manager.team을 우선합니다.
+    team: explicitTeam || latestHistory?.team || fallbackTeam,
     areas: Array.isArray(manager.areas)
       ? manager.areas.map((item) => String(item || "").trim()).filter(Boolean)
       : String(manager.areas || "").split(",").map((item) => item.trim()).filter(Boolean),
@@ -3481,21 +3487,11 @@ function normalizeActivityType(value) {
 }
 
 function recordActivityType(record) {
-  const explicit = normalizeActivityType(
+  // 구분은 사용자가 직접 선택한 값만 사용합니다.
+  // 기타내용/메모에 '컨스' 또는 '지원' 문구가 있어도 자동으로 구분값을 만들지 않습니다.
+  return normalizeActivityType(
     record?.activityType ?? record?.distinction ?? record?.supportType ?? record?.consType ?? ""
   );
-  if (explicit) return explicit;
-
-  // 기존 데이터 호환: 예전에는 기타내용에 '컨스' 또는 '지원'을 직접 입력했습니다.
-  // 새 '구분' 필드가 비어 있을 때만 기존 기타내용을 그대로 해석합니다.
-  const legacy = String(record?.memo || "").normalize("NFKC").toLowerCase();
-  const compact = legacy.replace(/[\s._\-\/]+/g, "");
-  const hasCons = compact.includes("오다컨스") || compact.includes("컨스") || compact.includes("콘스");
-  const hasSupport = compact.includes("지원");
-  if (hasCons && !hasSupport) return "컨스";
-  if (hasSupport && !hasCons) return "지원";
-  if (hasCons && hasSupport) return "컨스/지원";
-  return "";
 }
 
 function activityTypeChipClass(value) {
@@ -3529,14 +3525,12 @@ function analyticsBaseRecordsForMonth(month) {
 }
 
 function analyticsActivityFlags(record) {
-  const text = analyticsActivityText(record);
-  const compact = text.replace(/[\s._\-\/]+/g, "");
-  const cons = compact.includes("오다컨스") || compact.includes("컨스") || compact.includes("콘스");
-  const support = compact.includes("지원");
+  // 접수리스트의 '구분' 직접 선택값만 집계합니다.
+  const type = recordActivityType(record);
   return {
-    cons,
+    cons: type === "컨스",
     orderCons: false,
-    support,
+    support: type === "지원",
     excludedFromPure: false
   };
 }
@@ -5561,18 +5555,29 @@ function renderAnalyticsMonthStatusRows(settings) {
   const wrap = $("#analyticsMonthStatusRows");
   if (!wrap) return;
   const months = analyticsMonthStatusDisplayMonths(settings);
-  wrap.innerHTML = months.map((month) => {
-    const hasData = analyticsMonthHasData(month);
-    const value = settings.monthDataStatus?.[month] || "auto";
-    return `<div class="analytics-setting-row analytics-month-status-row" data-analytics-month="${month}">
-      <strong>${escapeHtml(formatMonthLabel(month))}</strong>
-      ${hasData ? `<span class="analytics-auto-badge">접수자료 있음 · 완료</span>` : `<select class="analytics-month-status-select" data-month="${month}">
-        <option value="auto" ${value === "auto" ? "selected" : ""}>자동</option>
-        <option value="미입력" ${value === "미입력" ? "selected" : ""}>미입력</option>
-        <option value="입력완료" ${value === "입력완료" ? "selected" : ""}>입력완료</option>
-      </select>`}
+  const end = monthIso();
+  const years = [...new Set(months.map((month) => month.slice(0, 4)))];
+  wrap.innerHTML = `
+    <div class="analytics-month-status-toolbar">
+      <span><strong>${months.length ? escapeHtml(years[0] + (years.length > 1 ? ` · ${years.at(-1)}` : "") ) : ""}</strong> · 최근 ${months.length}개월</span>
+      <small>● 자료 있음 · ○ 자료 없음</small>
+    </div>
+    <div class="analytics-month-status-grid">
+      ${months.map((month) => {
+        const hasData = analyticsMonthHasData(month);
+        const value = settings.monthDataStatus?.[month] || "auto";
+        return `<div class="analytics-month-tile ${hasData ? "has-data" : ""}" data-analytics-month="${month}">
+          <strong>${escapeHtml(formatMonthLabel(month).replace(/^\d{4}년\s*/, ""))}</strong>
+          ${hasData
+            ? `<span class="analytics-auto-badge">● 자료 있음</span>`
+            : `<select class="analytics-month-status-select" data-month="${month}" aria-label="${escapeHtml(formatMonthLabel(month))} 상태">
+                <option value="auto" ${value === "auto" ? "selected" : ""}>○ 자동</option>
+                <option value="미입력" ${value === "미입력" ? "selected" : ""}>○ 미입력</option>
+                <option value="입력완료" ${value === "입력완료" ? "selected" : ""}>● 완료</option>
+              </select>`}
+        </div>`;
+      }).join("") || `<div class="analytics-empty-choice">선택할 월이 없습니다.</div>`}
     </div>`;
-  }).join("") || `<div class="analytics-empty-choice">선택할 월이 없습니다.</div>`;
 }
 
 function renderAnalyticsAliasRows(settings) {
@@ -7030,7 +7035,7 @@ function printManagementEvaluation() {
 <style>
 @page{size:A4 portrait;margin:0}*{box-sizing:border-box;-webkit-print-color-adjust:exact;print-color-adjust:exact}html,body{margin:0;padding:0;background:#fff;color:#17231e;font-family:"Malgun Gothic",Arial,sans-serif}body{font-size:9pt;line-height:1.35}.evaluation-report-page{position:relative;width:210mm;height:297mm;padding:13mm 13mm 12mm;overflow:hidden;background:#fff;break-after:page;page-break-after:always}.evaluation-report-page:last-child{break-after:auto;page-break-after:auto}.evaluation-report-header{height:24mm;display:flex;justify-content:space-between;align-items:flex-end;gap:10mm;padding-bottom:4mm;border-bottom:2px solid #214b3b;margin-bottom:5mm}.evaluation-report-kicker{color:#527b69;font-size:7pt;font-weight:900;letter-spacing:.16em;margin-bottom:1.2mm}.evaluation-report-header h1{margin:0;font-size:20pt;line-height:1.1;color:#173a2e;letter-spacing:-.04em}.evaluation-report-header p{margin:2mm 0 0;color:#5b6c64;font-size:8pt;font-weight:700}.evaluation-report-meta{min-width:42mm;text-align:right}.evaluation-report-meta strong{display:block;font-size:11pt;color:#173a2e}.evaluation-report-meta span{display:block;margin-top:1mm;color:#5b6c64;font-size:7.5pt;font-weight:700}.evaluation-report-section-note{margin:0 0 3mm;padding:2mm 3mm;border-left:3px solid #4b8069;background:#f1f6f3;color:#3d5148;font-size:8pt;font-weight:750}.evaluation-report-body{height:243mm;overflow:hidden}.evaluation-report-footer{position:absolute;left:13mm;right:13mm;bottom:5mm;padding-top:2mm;border-top:1px solid #c5d0cb;display:grid;grid-template-columns:1fr 1fr 12mm;gap:3mm;color:#708078;font-size:6.8pt}.evaluation-report-footer span:nth-child(2){text-align:center}.evaluation-report-footer strong{text-align:right;color:#214b3b}.panel{border:1px solid #b9c7c0;border-radius:3px;background:#fff;box-shadow:none;margin:0 0 4mm;overflow:hidden}.panel-head{display:flex;justify-content:space-between;align-items:center;padding:2.2mm 3mm;border-bottom:1px solid #c8d2cd;background:#f0f5f2}.panel-head h2{margin:0;font-size:10pt;color:#1c4032;font-weight:900}.panel-head strong,.panel-head span{color:#53655d;font-size:7.5pt;font-weight:800}.evaluation-summary-grid{display:grid;grid-template-columns:1.35fr repeat(3,1fr);gap:2.2mm;padding:2.5mm}.evaluation-summary-card{min-height:21mm;padding:2.6mm;border:1px solid #c2cec8;border-radius:3px;background:#fbfcfb;text-align:center}.evaluation-summary-card.main{background:#eef6f1;border-color:#7ca18e}.evaluation-summary-card span{display:block;color:#5b6b63;font-size:7.2pt;font-weight:800}.evaluation-summary-card strong{display:block;margin-top:1.8mm;color:#173a2e;font-size:14pt;line-height:1;font-weight:950}.evaluation-summary-card.main strong{font-size:18pt}.evaluation-score-panel{margin-top:3mm}.evaluation-score-table{width:100%;border-collapse:collapse;table-layout:fixed}.evaluation-score-table th,.evaluation-score-table td{border:1px solid #bcc7c2;padding:1.25mm .8mm;text-align:center;vertical-align:middle;overflow:hidden}.evaluation-score-table th{background:#edf3f0;color:#234536;font-size:6.7pt;font-weight:900}.evaluation-score-table td{font-size:6.5pt;font-weight:700;color:#25342e}.evaluation-score-table th:nth-child(1){width:14mm}.evaluation-score-table th:nth-child(2){width:14mm}.evaluation-score-table th:nth-child(3){width:16mm}.evaluation-score-table th:nth-child(4){width:31mm}.evaluation-score-table th:nth-child(5){width:27mm}.evaluation-score-table th:nth-child(6){width:48mm}.evaluation-score-table th:nth-child(7){width:16mm}.evaluation-score-table th:nth-child(8){width:16mm}.evaluation-part-name{background:#f5f8f6;font-weight:900;color:#214b3b}.evaluation-part-max,.evaluation-part-score{background:#f9fbfa}.evaluation-part-score strong{display:block;font-size:8.5pt}.evaluation-part-score span,.evaluation-part-score small{display:block;color:#66766e;font-size:5.8pt}.evaluation-score-cell{font-size:8.5pt;font-weight:950;color:#173a2e}.evaluation-detail-table{width:100%;border-collapse:collapse;table-layout:fixed;margin-bottom:4mm}.evaluation-detail-table th,.evaluation-detail-table td{border:1px solid #bcc7c2;padding:1.8mm 1.2mm;font-size:7.2pt;vertical-align:middle}.evaluation-detail-table th{background:#edf3f0;color:#234536;font-weight:900;text-align:center}.evaluation-detail-table td{text-align:center}.evaluation-detail-table td:first-child{text-align:left;font-weight:900;color:#214b3b}.evaluation-detail-report{margin-top:3mm}.evaluation-detail-report .report-subheading{margin-bottom:2mm}..evaluation-product-tables-grid{display:grid;grid-template-columns:1fr 1fr;gap:4mm}.evaluation-product-tables-grid table,.evaluation-policy-product-report table{width:100%;border-collapse:collapse;table-layout:fixed}.evaluation-product-tables-grid th,.evaluation-product-tables-grid td,.evaluation-policy-product-report th,.evaluation-policy-product-report td{border:1px solid #bcc7c2;padding:1.5mm 1mm;text-align:center;vertical-align:middle;font-size:7pt}.evaluation-product-tables-grid th,.evaluation-policy-product-report th{background:#edf3f0;color:#234536;font-weight:900}.evaluation-product-total-row th,.evaluation-product-total-row td{background:#f0f5f2;font-weight:950}.evaluation-product-count-cell{font-weight:950;color:#173a2e}.evaluation-manual-report,.evaluation-policy-report,.evaluation-policy-product-report{margin:0}.report-subheading{font-size:12pt;font-weight:950;color:#173a2e;padding:2mm 0 2.5mm;border-bottom:2px solid #214b3b;margin-bottom:2.5mm}.report-intro{margin:0 0 3mm;color:#5b6c64;font-size:7.8pt;font-weight:700}.evaluation-manual-table,.evaluation-policy-table{width:100%;border-collapse:collapse;table-layout:fixed}.evaluation-manual-table th,.evaluation-manual-table td,.evaluation-policy-table th,.evaluation-policy-table td{border:1px solid #bcc7c2;padding:1.7mm 1.2mm;vertical-align:middle}.evaluation-manual-table th,.evaluation-policy-table th{background:#edf3f0;color:#234536;font-size:7pt;font-weight:900;text-align:center}.evaluation-manual-table td{font-size:7.4pt}.evaluation-manual-table th:nth-child(1){width:32mm}.evaluation-manual-table th:nth-child(2){width:auto}.evaluation-manual-table th:nth-child(3){width:38mm}.manual-part{background:#f7faf8;font-weight:900;color:#214b3b}.manual-value{text-align:center;font-weight:950;color:#173a2e}.evaluation-policy-table{font-size:6.6pt}.evaluation-policy-table th,.evaluation-policy-table td{padding:1.5mm .9mm;text-align:center;overflow-wrap:anywhere}.evaluation-policy-table th:nth-child(1){width:27mm}.evaluation-policy-table th:nth-child(2){width:15mm}.evaluation-policy-table th:nth-child(3){width:40mm}.evaluation-policy-table th:nth-child(4){width:27mm}.evaluation-policy-table th:nth-child(5){width:17mm}.evaluation-policy-table th:nth-child(6){width:24mm}.evaluation-policy-table th:nth-child(7){width:18mm}.evaluation-policy-table th:nth-child(8){width:auto}.policy-item-title{font-weight:900;color:#214b3b;background:#f7faf8}.evaluation-policy-product-report{margin-top:5mm}.evaluation-policy-product-report h3{margin:0 0 1.5mm;font-size:8.5pt;color:#214b3b}.evaluation-policy-product-grid{display:grid;grid-template-columns:1fr 1fr;gap:4mm}.evaluation-print-value{font-weight:900}.report-empty{padding:12mm;text-align:center;color:#718078;border:1px dashed #b9c7c0}.evaluation-report-first .evaluation-score-panel{margin-bottom:0}.evaluation-report-policy .evaluation-policy-report{margin-bottom:0}@media print{.evaluation-report-page{break-inside:avoid;page-break-inside:avoid}}
 
-/* V10.56 Evaluation Report Design Upgrade */
+/* V10.65 Evaluation Report Design Upgrade */
 .evaluation-report-first .evaluation-summary-grid{grid-template-columns:1.6fr repeat(3,1fr);gap:3mm;}
 .evaluation-report-first .evaluation-summary-card{border-radius:8px;padding:4mm;min-height:25mm;background:#fff;}
 .evaluation-report-first .evaluation-summary-card.main{background:linear-gradient(135deg,#e8f3ff,#f7fbff);border:2px solid #2f6fb5;}
@@ -7625,7 +7630,7 @@ function renderCommonControls() {
 
   setOptions($("#categoryInput"), categories, $("#categoryInput").value);
   const activityTypeInput = $("#activityTypeInput");
-  if (activityTypeInput) setOptions(activityTypeInput, activityTypes.map((value) => ({ value, label: value || "선택" })), activityTypeInput.value);
+  if (activityTypeInput) setOptions(activityTypeInput, activityTypes.map((value) => ({ value, label: value || "-" })), activityTypeInput.value);
   setOptions($("#statusInput"), statuses, $("#statusInput").value);
   updateSellerInputOptions($("#sellerInput")?.value || "");
 
@@ -8732,6 +8737,36 @@ function normalizedPhoneDigits(value) {
   return String(value || "").replace(/\D/g, "");
 }
 
+function currentUserTeamName(month = currentDashboardMonth()) {
+  const configured = configuredTeamNames();
+  const explicit = normalizeTeamName(state?.appMeta?.userTeam);
+  if (explicit) return explicit;
+
+  const masterName = String(state?.appMeta?.masterName || "").trim();
+  if (masterName) {
+    const manager = managerByName(masterName);
+    if (manager?.name) return currentTeamForManager(manager);
+  }
+
+  return configured[0] || "원팀";
+}
+
+function currentTeamForManager(managerOrName) {
+  const manager = typeof managerOrName === "string" ? managerByName(managerOrName) : managerOrName;
+  if (!manager?.name) return "";
+  const normalized = normalizeManager(manager);
+  return normalizeTeamName(normalized.team) || managerTeamForMonth(normalized, currentDashboardMonth());
+}
+
+function recordBelongsToCurrentUserTeam(record, month = "") {
+  const managerName = String(record?.manager || "").trim();
+  if (!managerName) return false;
+  const manager = managerByName(managerName);
+  if (!manager) return false;
+  const targetMonth = normalizeManagerMonth(month) || currentDashboardMonth();
+  return currentTeamForManager(manager) === currentUserTeamName(targetMonth);
+}
+
 function filteredRecordSetForList() {
   const statusFilter = $("#recordStatusFilter")?.value || "";
   const managerFilter = $("#recordManagerFilter")?.value || "";
@@ -8740,8 +8775,11 @@ function filteredRecordSetForList() {
   const simpleSearch = ($("#recordSimpleSearch")?.value || "").trim().toLowerCase();
   const simpleSearchDigits = normalizedPhoneDigits(simpleSearch);
 
+  const teamScoped = state?.appMeta?.teamScopedRecords !== false;
+
   return recordsByRecordPeriod()
     .filter((record) => !isMembershipRecord(record))
+    .filter((record) => !teamScoped || recordBelongsToCurrentUserTeam(record, recordGoalMonth(record, currentDashboardMonth())))
     .filter((record) => {
       if (!simpleSearch) return true;
       const searchableText = [
@@ -9011,7 +9049,7 @@ function recordPrintHtml(records) {
         <td class="status">${escapeHtml(compactValue(record.status))}</td>
         <td class="manager">${escapeHtml(compactValue(record.manager))}</td>
         <td class="category">${escapeHtml(compactValue(record.category))}</td>
-        <td class="activity">${escapeHtml(recordActivityType(record) || "-")}</td>
+        <td class="activity">${escapeHtml(recordActivityType(record) || "")}</td>
         <td class="count">${formatNumber(record.count)}</td>
         <td class="customer-no">${record.previousCustomer ? `<span>${escapeHtml(record.previousCustomer)}</span><br>` : ""}<strong>${escapeHtml(compactValue(record.customerNo))}</strong></td>
         <td class="customer"><strong>${escapeHtml(compactValue(record.customerName))}</strong>${phone ? `<br><span>${escapeHtml(phone)}</span>` : ""}</td>
@@ -9616,7 +9654,7 @@ function mobileRecordCardHtml(record, index, total, membership = false) {
           <div class="mobile-record-detail-row"><span>기존 고객번호</span><strong>${escapeHtml(previousNo || "-")}</strong></div>
           <div class="mobile-record-detail-row"><span>신규 고객번호</span><strong>${escapeHtml(newNo || "-")}</strong></div>
           <div class="mobile-record-detail-row"><span>${sellerLabel}</span><strong>${escapeHtml(sellerValue)}</strong></div>
-          ${!membership ? `<div class="mobile-record-detail-row"><span>구분</span><strong>${escapeHtml(activityType || "-")}</strong></div>` : ""}
+          ${!membership ? `<div class="mobile-record-detail-row"><span>구분</span><strong>${escapeHtml(activityType || "")}</strong></div>` : ""}
           <div class="mobile-record-detail-row"><span>기타내용</span><strong>${escapeHtml(compactValue(record.memo, "-"))}</strong></div>
         </div>
       </div>
@@ -9788,6 +9826,43 @@ function statusCountSummary(records, labels = {}) {
   return parts.join(" / ");
 }
 
+function recordSelectionKey(record) {
+  return String(record?.id || promoRecordKey(record) || "");
+}
+
+function updateBulkRecordDeleteUI(visibleRecords = []) {
+  const selectedVisible = visibleRecords.filter((record) => selectedRecordIds.has(recordSelectionKey(record))).length;
+  const count = selectedRecordIds.size;
+  const button = $("#bulkDeleteRecordsBtn");
+  if (button) {
+    button.disabled = count === 0;
+    button.innerHTML = `선택 삭제 <span id="selectedRecordCount">${count}</span>`;
+  }
+  const selectAll = $("#selectAllRecords");
+  if (selectAll) {
+    selectAll.checked = visibleRecords.length > 0 && selectedVisible === visibleRecords.length;
+    selectAll.indeterminate = selectedVisible > 0 && selectedVisible < visibleRecords.length;
+  }
+}
+
+function deleteSelectedRecords() {
+  const keys = new Set(selectedRecordIds);
+  if (!keys.size) return;
+  const targetRecords = (state.records || []).filter((record) => keys.has(recordSelectionKey(record)));
+  if (!targetRecords.length) {
+    selectedRecordIds.clear();
+    updateBulkRecordDeleteUI([]);
+    return;
+  }
+  const ok = window.confirm(`선택한 ${targetRecords.length}건의 접수 내역을 삭제하시겠습니까?\n삭제한 데이터는 되돌릴 수 없습니다.`);
+  if (!ok) return;
+  state.records = (state.records || []).filter((record) => !keys.has(recordSelectionKey(record)));
+  if (selectedRecordId && keys.has(String(selectedRecordId))) selectedRecordId = "";
+  selectedRecordIds.clear();
+  resetRecordForm();
+  saveState(`${targetRecords.length}건의 접수 내역을 삭제했습니다.`);
+}
+
 function renderRecords() {
   const records = visibleRecordsForCurrentFilters();
 
@@ -9800,8 +9875,10 @@ function renderRecords() {
       const statusKey = compactValue(record.status, "접수");
       const selectedClass = selectedRecordId === record.id ? " selected-record-row" : "";
       const sequence = records.length - index;
+      const recordKey = recordSelectionKey(record);
       return `
-      <tr class="clickable-row clean-record-row status-${escapeHtml(statusKey)}${record.seller ? " seller-selected-row" : ""}${selectedClass}" data-record-id="${escapeHtml(promoRecordKey(record))}" title="순번을 클릭하면 상하 이동 버튼이 보입니다.">
+      <tr class="clickable-row clean-record-row status-${escapeHtml(statusKey)}${record.seller ? " seller-selected-row" : ""}${selectedClass}" data-record-id="${escapeHtml(recordKey)}" title="순번을 클릭하면 상하 이동 버튼이 보입니다.">
+        <td class="record-select-col"><input type="checkbox" class="record-select-checkbox" data-record-select="${escapeHtml(recordKey)}" aria-label="접수 내역 선택" ${selectedRecordIds.has(recordKey) ? "checked" : ""}></td>
         <td class="seq-col" data-edit-type="none">
           <div class="seq-cell seq-cell-vertical">
             <button class="row-move-button row-move-up" type="button" data-move="up" title="위로">▲</button>
@@ -9816,7 +9893,7 @@ function renderRecords() {
         <td class="status-col" data-edit-type="status"><span class="status-pill ${statusClass(record.status)} ${typeof statusColorClass === "function" ? statusColorClass(record.status) : ""}">${escapeHtml(compactValue(record.status))}</span></td>
         <td class="manager-col" data-edit-type="manager"><strong>${escapeHtml(compactValue(record.manager))}</strong></td>
         <td class="category-col" data-edit-type="category"><span class="category-chip ${typeof categoryColorClass === "function" ? categoryColorClass(record.category) : ""}">${escapeHtml(compactValue(record.category))}</span></td>
-        <td class="activity-col" data-edit-type="activity-type"><span class="activity-type-chip ${activityTypeChipClass(recordActivityType(record))}">${escapeHtml(recordActivityType(record) || "-")}</span></td>
+        <td class="activity-col" data-edit-type="activity-type">${recordActivityType(record) ? `<span class="activity-type-chip ${activityTypeChipClass(recordActivityType(record))}">${escapeHtml(recordActivityType(record))}</span>` : ""}</td>
         <td class="count-col" data-edit-type="count"><strong>${formatNumber(record.count)}</strong></td>
         <td class="customer-no-col" data-edit-type="customer-no-pair">
           ${previousNo ? `<span class="old-no">${escapeHtml(previousNo)}</span>` : `<span class="old-no muted-text">기존 없음</span>`}
@@ -9832,9 +9909,10 @@ function renderRecords() {
       </tr>
     `;
     }).join("")
-    : `<tr><td colspan="12" class="empty">조건에 맞는 접수 내역이 없습니다.</td></tr>`;
+    : `<tr><td colspan="13" class="empty">조건에 맞는 접수 내역이 없습니다.</td></tr>`;
 
   renderMobileRecordCards(records);
+  updateBulkRecordDeleteUI(records);
 }
 
 
@@ -10312,7 +10390,7 @@ function managerSettingsRowMarkup(rawManager, targetMonth, isNew = false) {
 }
 
 function teamSettingsRowMarkup(team, index) {
-  return `<div class="team-setting-row" data-team-index="${index}" data-original-team="${escapeHtml(team)}"><span class="team-setting-number">${index + 1}</span><input class="team-setting-name" value="${escapeHtml(team)}" placeholder="팀 이름"><button class="ghost-button small remove-team-setting" type="button" ${configuredTeamNames().length <= 1 ? "disabled" : ""}>삭제</button></div>`;
+  return `<div class="team-setting-row" data-team-index="${index}" data-original-team="${escapeHtml(team)}"><div class="team-setting-label"><span class="team-setting-number">${index + 1}</span><strong>${index + 1}번째 팀</strong></div><input class="team-setting-name" value="${escapeHtml(team)}" placeholder="실제 팀 이름 (예: A팀, B팀)"><button class="ghost-button small remove-team-setting" type="button" ${configuredTeamNames().length <= 1 ? "disabled" : ""}>삭제</button></div>`;
 }
 
 function renderTeamSettings() {
@@ -10339,6 +10417,36 @@ function collectTeamSettings() {
   return true;
 }
 
+function teamOperationMode() {
+  const stored = String(state?.appMeta?.teamOperationMode || "").trim();
+  if (stored === "1" || stored === "2") return stored;
+  return configuredTeamNames().length >= 2 ? "2" : "1";
+}
+
+function renderTeamOperationSettings() {
+  const mode = teamOperationMode();
+  const single = $("#teamOperationSingleBtn");
+  const dual = $("#teamOperationDualBtn");
+  [single, dual].forEach((button) => {
+    if (!button) return;
+    const active = button.dataset.teamOperation === mode;
+    button.classList.toggle("primary-button", active);
+    button.classList.toggle("ghost-button", !active);
+    button.setAttribute("aria-pressed", active ? "true" : "false");
+  });
+}
+
+function setTeamOperationMode(mode) {
+  const normalized = String(mode) === "2" ? "2" : "1";
+  if (!state.appMeta) state.appMeta = {};
+  state.appMeta.teamOperationMode = normalized;
+  // 기존에 저장된 팀 이름/소속 데이터는 그대로 유지합니다.
+  // 이 설정은 지국이 1팀/2팀 체제로 운영되는지만 표시하며, 기존 팀 데이터 자체를 삭제하지 않습니다.
+  renderTeamOperationSettings();
+  persistState();
+  showToast(`${normalized}팀 운영으로 설정했습니다.`);
+}
+
 function renderSettings() {
   setSettingsVersionStatus("", "");
   state.appMeta = { ...sampleState.appMeta, ...(state.appMeta || {}) };
@@ -10358,7 +10466,7 @@ function renderSettings() {
 
   renderGoalSettingsForMonth($("#goalMonthInput")?.value || $("#monthFilter").value);
   renderCustomDashboardCardSettings();
-  renderTeamSettings();
+  renderTeamOperationSettings();
   renderAnalyticsSettings();
 
   managerSettingsDeletedIds.clear();
@@ -10425,7 +10533,7 @@ function exportFullBackup() {
     backupType: "MJ_Sales_Manager_FullBackup",
     appName: "MJ_Sales_Manager",
     exportedAt: new Date().toISOString(),
-    version: "V10.56",
+    version: "V10.65",
     description: "접수내역, 경영평가 월별 입력값·주력상품 상대평가 예상점수·팀 정책이행 수기건수, 접수일 기준 매니저 귀속, 매니저 고유번호·노출순번·재직상태·팀 이동이력, 월별 목표·수기실적, 운영목표, 실판매자 귀속 및 제품분석 설정을 포함한 전체 데이터 백업",
     data: state
   };
@@ -10618,20 +10726,31 @@ async function importFullBackupFile(file) {
     showToast("백업 데이터 적용 중...");
     state = normalizeState(data);
     invalidateManagerCaches();
-    showToast(`백업 데이터 적용 완료 · 접수내역 ${Array.isArray(state.records) ? state.records.length : 0}건`);
+    const restoredRecordCount = Array.isArray(state.records) ? state.records.length : 0;
+    showToast(`백업 데이터 적용 완료 · 접수내역 ${restoredRecordCount}건`);
 
-    showToast("전체 백업 복원 중 · Google Drive에 저장하고 있습니다...");
-    await persistState({ ensureManagers: true, immediateServer: true });
+    // GitHub Pages(사용자 웹버전)에는 /api/state 서버가 존재하지 않습니다.
+    // 이 경우 localStorage에 복원된 데이터를 정상적으로 유지하고, 서버 검증은 건너뜁니다.
+    const isGitHubPages = /(^|\.)github\.io$/i.test(String(location.hostname || ""));
+    const canUseStateApi = !isGitHubPages && location.protocol !== "file:";
+    let verifyRecordCount = restoredRecordCount;
 
-    const verifyResponse = await fetch(STATE_API_URL, { cache: "no-store" });
-    if (!verifyResponse.ok) {
-      throw new Error(`Google Drive 저장 확인 실패 (${verifyResponse.status})`);
-    }
-    const verifyData = await verifyResponse.json();
-    const verifyRecordCount = Array.isArray(verifyData.records) ? verifyData.records.length : 0;
-    const expectedRecordCount = Array.isArray(state.records) ? state.records.length : 0;
-    if (verifyRecordCount !== expectedRecordCount) {
-      throw new Error(`저장 검증 불일치: expected=${expectedRecordCount}, actual=${verifyRecordCount}`);
+    if (canUseStateApi) {
+      showToast("전체 백업 복원 중 · 서버 저장을 확인하고 있습니다...");
+      await persistState({ ensureManagers: true, immediateServer: true });
+      const verifyResponse = await fetch(STATE_API_URL, { cache: "no-store" });
+      if (!verifyResponse.ok) {
+        throw new Error(`서버 저장 확인 실패 (${verifyResponse.status})`);
+      }
+      const verifyData = await verifyResponse.json();
+      verifyRecordCount = Array.isArray(verifyData.records) ? verifyData.records.length : 0;
+      if (verifyRecordCount !== restoredRecordCount) {
+        throw new Error(`저장 검증 불일치: expected=${restoredRecordCount}, actual=${verifyRecordCount}`);
+      }
+    } else {
+      // persistState()가 기본적으로 localStorage에 먼저 저장하므로 웹 정적 배포에서도 복원이 유지됩니다.
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      showToast("전체 백업 복원 완료 · 현재 브라우저에 안전하게 저장했습니다.");
     }
 
     selectedRecordId = "";
@@ -10643,7 +10762,10 @@ async function importFullBackupFile(file) {
     renderNow();
     setMobileSyncStatus("백업에서 모바일 동기화 설정까지 복원되었습니다.", "success");
     showToast(`전체 백업 복원 완료 · 접수내역 ${verifyRecordCount}건`);
-    window.alert(`전체 백업 복원이 완료되었습니다.\n\n접수내역 ${verifyRecordCount}건이 Google Drive에 저장되었습니다.`);
+    const restoreTargetMessage = canUseStateApi
+      ? `접수내역 ${verifyRecordCount}건이 서버 저장까지 확인되었습니다.`
+      : `접수내역 ${verifyRecordCount}건이 현재 브라우저에 저장되었습니다.`;
+    window.alert(`전체 백업 복원이 완료되었습니다.\n\n${restoreTargetMessage}`);
     return true;
   } catch (error) {
     console.error("[BACKUP IMPORT] restore/save failed", error);
@@ -11264,7 +11386,7 @@ function updateRecordState(recordId, patch, message = "접수내역을 수정했
   // 수정 시에는 updatedAt만 기록하고, 접수일 정렬 순서는 변경하지 않습니다.
   record.updatedAt = new Date().toISOString();
   if (patch.category) record.category = normalizeCategory(record.category);
-  if (patch.activityType !== undefined) record.activityType = normalizeActivityType(patch.activityType);
+  if (patch.activityType !== undefined) record.activityType = normalizeActivityType(record.activityType);
   selectedRecordId = recordId;
   persistState();
   renderRecords();
@@ -11276,7 +11398,7 @@ function updateRecordState(recordId, patch, message = "접수내역을 수정했
 function buildInlineEditor(type, record) {
   const recordMonth = recordGoalMonth(record);
   const managers = managerInputNames(record.manager, recordMonth, true);
-  const selectMarkup = (field, current, values) => `<select class="cell-input" data-field="${field}">${values.map((value) => `<option value="${escapeHtml(value)}"${value === current ? " selected" : ""}>${escapeHtml(value)}</option>`).join("")}</select>`;
+  const selectMarkup = (field, current, values, emptyLabel = "") => `<select class="cell-input" data-field="${field}">${values.map((value) => `<option value="${escapeHtml(value)}"${value === current ? " selected" : ""}>${escapeHtml(value || emptyLabel)}</option>`).join("")}</select>`;
   if (type === "date-pair") return `
     <div class="cell-editor-stack">
       <input class="cell-input" data-field="receivedDate" type="date" value="${escapeHtml(record.receivedDate || "")}">
@@ -11285,7 +11407,7 @@ function buildInlineEditor(type, record) {
   if (type === "status") return selectMarkup("status", record.status, statuses);
   if (type === "manager") return selectMarkup("manager", record.manager, managers);
   if (type === "category") return selectMarkup("category", normalizeCategory(record.category), categories);
-  if (type === "activity-type") return selectMarkup("activityType", activityTypes.includes(recordActivityType(record)) ? recordActivityType(record) : "", activityTypes);
+  if (type === "activity-type") return selectMarkup("activityType", activityTypes.includes(recordActivityType(record)) ? recordActivityType(record) : "", activityTypes, "-");
   if (type === "count") return `<input class="cell-input" data-field="count" type="number" min="0" step="0.5" value="${escapeHtml(record.count ?? 0)}">`;
   if (type === "customer-no-pair") return `
     <div class="cell-editor-stack">
@@ -14292,6 +14414,9 @@ function attachEvents() {
     saveState(`${savedMonth} 월 목표지수를 저장했습니다. 기존 월 실적은 유지됩니다.`);
   });
 
+  $("#teamOperationSingleBtn")?.addEventListener("click", () => setTeamOperationMode("1"));
+  $("#teamOperationDualBtn")?.addEventListener("click", () => setTeamOperationMode("2"));
+
 
   $("#receivedDateInput")?.addEventListener("change", () => {
     const selectedManager = $("#managerInput")?.value || "";
@@ -14391,6 +14516,11 @@ function attachEvents() {
   });
 
   $("#recordTableBody").addEventListener("click", (event) => {
+    const checkbox = event.target.closest(".record-select-checkbox");
+    if (checkbox) {
+      event.stopPropagation();
+      return;
+    }
     const row = event.target.closest("[data-record-id]");
     if (!row) return;
 
@@ -14427,6 +14557,28 @@ function attachEvents() {
     if (event.target.closest("input, select, textarea, button")) return;
     enterRecordCellEdit(cell);
   });
+
+  $("#recordTableBody").addEventListener("change", (event) => {
+    const checkbox = event.target.closest(".record-select-checkbox");
+    if (!checkbox) return;
+    const key = String(checkbox.dataset.recordSelect || "");
+    if (!key) return;
+    if (checkbox.checked) selectedRecordIds.add(key);
+    else selectedRecordIds.delete(key);
+    updateBulkRecordDeleteUI(visibleRecordsForCurrentFilters());
+  });
+
+  $("#selectAllRecords")?.addEventListener("change", (event) => {
+    const visibleRecords = visibleRecordsForCurrentFilters();
+    visibleRecords.forEach((record) => {
+      const key = recordSelectionKey(record);
+      if (event.target.checked) selectedRecordIds.add(key);
+      else selectedRecordIds.delete(key);
+    });
+    renderRecords();
+  });
+
+  $("#bulkDeleteRecordsBtn")?.addEventListener("click", deleteSelectedRecords);
 
   $("#recordTableBody").addEventListener("keydown", (event) => {
     const cell = event.target.closest("td.editing-cell");
@@ -14864,7 +15016,7 @@ document.addEventListener("click", (event) => {
 
 
 
-const APP_VERSION = "v10.56";
+const APP_VERSION = "v10.64";
 const UPDATE_RELEASES_URL = "https://github.com/kiuja78/cuckoo-sales-system/releases/tag/sales-system";
 const UPDATE_RELEASE_API_URL = "https://api.github.com/repos/kiuja78/cuckoo-sales-system/releases/tags/sales-system";
 const SALES_MANAGER_LATEST_VERSION = APP_VERSION;
@@ -15345,3 +15497,17 @@ window.reportImageBlob = reportImageBlob;
 window.shareKakaoImage = shareKakaoImage;
 
 init();
+
+// V10.65 promo button delegated fallback fix
+(function(){
+  function addPromoRowFix(){
+    const id=event && event.target ? event.target.id : '';
+    try {
+      if(id==='addCountRuleBtn'){ renderCountRuleRows([...collectCountRuleRows(), { threshold: 1, reward: "", quantity: 1 }]); return; }
+      if(id==='addScoreRuleBtn'){ renderScoreRuleRows([...collectScoreRuleRows(), { title:"", keyword:"", keywords:[], excludeKeyword:"", excludeKeywords:[], score:1 }]); return; }
+      if(id==='addScoreRewardBtn'){ renderScoreRewardRows([...collectScoreRewardRows(), { threshold:1, reward:"", quantity:1 }]); return; }
+      if(id==='addProductRuleBtn'){ renderProductRuleRows([...collectProductRuleRows(), { title:"", keyword:"", keywords:[], reward:"", quantity:1 }]); return; }
+    } catch(e){ console.error('promo add fix', e); }
+  }
+  document.addEventListener('click', addPromoRowFix, true);
+})();
